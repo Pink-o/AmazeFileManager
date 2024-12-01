@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amaze.filemanager.R;
+import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
 import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.asynchronous.asynctasks.DeleteTask;
 import com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil;
@@ -684,6 +685,15 @@ public class MainActivityHelper {
       new DeleteTask(mainActivity, doDeletePermanently).execute((files));
     else Toast.makeText(mainActivity, R.string.not_allowed, Toast.LENGTH_SHORT).show();
   }
+
+    public void deleteFilesPermanently(ArrayList<LayoutElementParcelable> files) {
+        final ArrayList<HybridFileParcelable> itemsToDelete = new ArrayList<>();
+        for (int i = 0; i < files.size(); i++) {
+            final LayoutElementParcelable layoutElement = files.get(i);
+            itemsToDelete.add(layoutElement.generateBaseFile());
+        }
+        deleteFiles(itemsToDelete, true);
+    }
 
   public void extractFile(@NonNull File file) {
     final File parent = file.getParentFile();

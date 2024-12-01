@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.amaze.filemanager.R;
+import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
 import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.database.TabHandler;
 import com.amaze.filemanager.database.models.explorer.Tab;
@@ -59,6 +60,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -506,11 +508,29 @@ public class TabFragment extends Fragment {
           new DragToTrashListener(
               () -> {
                 if (mainFragment != null) {
-                  GeneralDialogCreation.deleteFilesDialog(
-                      requireContext(),
-                      requireMainActivity(),
-                      mainFragment.adapter.getCheckedItems(),
-                      requireMainActivity().getAppTheme());
+                    SharedPreferences sharedPreferences =
+                            PreferenceManager.getDefaultSharedPreferences(requireContext());
+                    boolean deletePermanently = sharedPreferences.getBoolean(
+                            PreferencesConstants.PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION,
+                            PreferencesConstants.DEFAULT_PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION
+                    );
+                    if (deletePermanently) {
+                        Toast.makeText(
+                                requireContext(),
+                                requireContext().getString(R.string.deleting),
+                                Toast.LENGTH_SHORT
+                        ).show();
+                        requireMainActivity().mainActivityHelper.deleteFilesPermanently(
+                                mainFragment.adapter.getCheckedItems()
+                        );
+                    } else {
+                        GeneralDialogCreation.deleteFilesDialog(
+                                requireContext(),
+                                requireMainActivity(),
+                                mainFragment.adapter.getCheckedItems(),
+                                requireMainActivity().getAppTheme()
+                        );
+                    }
                 } else {
                   AppConfig.toast(requireContext(), getString(R.string.operation_unsuccesful));
                 }

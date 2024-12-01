@@ -30,6 +30,7 @@ import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.preference.PreferenceManager
 import com.amaze.filemanager.R
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode
@@ -38,6 +39,7 @@ import com.amaze.filemanager.filesystem.PasteHelper
 import com.amaze.filemanager.filesystem.files.FileUtils
 import com.amaze.filemanager.ui.activities.MainActivity
 import com.amaze.filemanager.ui.dialogs.GeneralDialogCreation
+import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants
 import com.amaze.filemanager.ui.selection.SelectionPopupMenu.Companion.invokeSelectionDropdown
 import java.io.File
 import java.lang.ref.WeakReference
@@ -237,12 +239,27 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     true
                 }
                 R.id.delete -> {
-                    GeneralDialogCreation.deleteFilesDialog(
-                        mainActivity,
-                        mainActivity,
-                        checkedItems,
-                        mainActivity.utilsProvider.appTheme,
+                    val sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(mainActivity)
+                    val deletePermanently = sharedPreferences.getBoolean(
+                        PreferencesConstants.PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION,
+                        PreferencesConstants.DEFAULT_PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION
                     )
+                    if (deletePermanently) {
+                        Toast.makeText(
+                            mainActivity,
+                            mainActivity.getString(R.string.deleting),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        mainActivity.mainActivityHelper.deleteFilesPermanently(checkedItems)
+                    } else {
+                        GeneralDialogCreation.deleteFilesDialog(
+                            mainActivity,
+                            mainActivity,
+                            checkedItems,
+                            mainActivity.utilsProvider.appTheme,
+                        )
+                    }
                     true
                 }
                 R.id.restore -> {

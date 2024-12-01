@@ -157,8 +157,19 @@ public class ItemPopupMenu extends PopupMenu implements PopupMenu.OnMenuItemClic
       case R.id.delete:
         ArrayList<LayoutElementParcelable> positions = new ArrayList<>();
         positions.add(rowItem);
-        GeneralDialogCreation.deleteFilesDialog(
-            context, mainActivity, positions, utilitiesProvider.getAppTheme());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean deletePermanently = sharedPreferences.getBoolean(
+                PreferencesConstants.PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION,
+                PreferencesConstants.DEFAULT_PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION
+        );
+        if (deletePermanently) {
+          Toast.makeText(context, context.getString(R.string.deleting), Toast.LENGTH_SHORT)
+                  .show();
+          mainActivity.mainActivityHelper.deleteFilesPermanently(positions);
+        } else {
+          GeneralDialogCreation.deleteFilesDialog(
+                  context, mainActivity, positions, utilitiesProvider.getAppTheme());
+        }
         return true;
       case R.id.restore:
         ArrayList<LayoutElementParcelable> p2 = new ArrayList<>();
