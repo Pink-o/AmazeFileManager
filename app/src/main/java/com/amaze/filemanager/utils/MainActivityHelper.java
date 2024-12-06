@@ -686,14 +686,14 @@ public class MainActivityHelper {
     else Toast.makeText(mainActivity, R.string.not_allowed, Toast.LENGTH_SHORT).show();
   }
 
-    public void deleteFilesPermanently(ArrayList<LayoutElementParcelable> files) {
-        final ArrayList<HybridFileParcelable> itemsToDelete = new ArrayList<>();
-        for (int i = 0; i < files.size(); i++) {
-            final LayoutElementParcelable layoutElement = files.get(i);
-            itemsToDelete.add(layoutElement.generateBaseFile());
-        }
-        deleteFiles(itemsToDelete, true);
+  public void deleteFilesPermanently(ArrayList<LayoutElementParcelable> files) {
+    final ArrayList<HybridFileParcelable> itemsToDelete = new ArrayList<>();
+    for (int i = 0; i < files.size(); i++) {
+      final LayoutElementParcelable layoutElement = files.get(i);
+      itemsToDelete.add(layoutElement.generateBaseFile());
     }
+    deleteFiles(itemsToDelete, true);
+  }
 
   public void extractFile(@NonNull File file) {
     final File parent = file.getParentFile();

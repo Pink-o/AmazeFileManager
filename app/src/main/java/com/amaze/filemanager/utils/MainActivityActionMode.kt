@@ -241,15 +241,16 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                 R.id.delete -> {
                     val sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(mainActivity)
-                    val deletePermanently = sharedPreferences.getBoolean(
-                        PreferencesConstants.PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION,
-                        PreferencesConstants.DEFAULT_PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION
-                    )
+                    val deletePermanently =
+                        sharedPreferences.getBoolean(
+                            PreferencesConstants.PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION,
+                            PreferencesConstants.DEFAULT_PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION,
+                        )
                     if (deletePermanently) {
                         Toast.makeText(
                             mainActivity,
                             mainActivity.getString(R.string.deleting),
-                            Toast.LENGTH_SHORT
+                            Toast.LENGTH_SHORT,
                         ).show()
                         mainActivity.mainActivityHelper.deleteFilesPermanently(checkedItems)
                     } else {
