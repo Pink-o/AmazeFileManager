@@ -202,7 +202,7 @@ public class LoadFilesListTask
     if (list != null
         && !(openmode == OpenMode.CUSTOM
             && (("5").equals(path) || ("6").equals(path) || ("7").equals(path)))) {
-      postListCustomPathProcess(list, mainFragment);
+      postListCustomPathProcess(list, mainFragmentViewModel);
     }
 
     return new Pair<>(openmode, list);
@@ -301,13 +301,12 @@ public class LoadFilesListTask
   }
 
   private void postListCustomPathProcess(
-      @NonNull List<LayoutElementParcelable> list, @NonNull MainFragment mainFragment) {
+      @NonNull List<LayoutElementParcelable> list,
+      @NonNull MainFragmentViewModel mainFragmentViewModel) {
 
     SortType sortType = SortHandler.getSortType(context.get(), path);
 
-    MainFragmentViewModel viewModel = mainFragment.getMainFragmentViewModel();
-
-    if (viewModel == null) {
+    if (mainFragmentViewModel == null) {
       LOG.error("MainFragmentViewModel is null, this is a bug");
       return;
     }
@@ -322,13 +321,13 @@ public class LoadFilesListTask
       }
 
       if (layoutElementParcelable.isDirectory) {
-        viewModel.incrementFolderCount();
+        mainFragmentViewModel.incrementFolderCount();
       } else {
-        viewModel.incrementFileCount();
+        mainFragmentViewModel.incrementFileCount();
       }
     }
 
-    Collections.sort(list, new FileListSorter(viewModel.getDsort(), sortType));
+    Collections.sort(list, new FileListSorter(mainFragmentViewModel.getDsort(), sortType));
   }
 
   private @Nullable LayoutElementParcelable createListParcelables(HybridFileParcelable baseFile) {
