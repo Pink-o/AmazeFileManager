@@ -130,7 +130,8 @@ public class LoadFilesListTask
     if (mainFragment == null
         || context == null
         || mainFragment.getMainFragmentViewModel() == null
-        || mainFragment.getMainActivityViewModel() == null) {
+        || mainFragment.getMainActivityViewModel() == null
+        || path == null) {
       cancel(true);
       return null;
     }
