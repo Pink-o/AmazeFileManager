@@ -329,6 +329,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyItemChanged(i);
       }
     }
+    invalidateSelection();
+    invalidateActionMode();
   }
 
   public void toggleSameTypes() {
