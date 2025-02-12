@@ -124,7 +124,6 @@ subprojects {
             }
         }
         dependencies {
-//            compileOnly 'com.github.pengrad:jdk9-deps:1.0'
 
             if (project.hasProperty('kapt')) {
                 kapt 'javax.xml.bind:jaxb-api:2.3.1'
