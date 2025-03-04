@@ -27,15 +27,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
+import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.O
+import android.os.Build.VERSION_CODES.Q
 import android.os.Build.VERSION_CODES.TIRAMISU
 import android.os.IBinder
 import android.widget.RemoteViews
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.amaze.filemanager.R
@@ -167,7 +170,16 @@ class ZipService : AbstractProgressiveService() {
                 .setOngoing(true)
                 .setColor(accentColor)
         NotificationConstants.setMetadata(this, mBuilder, NotificationConstants.TYPE_NORMAL)
-        startForeground(NotificationConstants.ZIP_ID, mBuilder.build())
+        if (SDK_INT >= Q) {
+            ServiceCompat.startForeground(
+                this,
+                NotificationConstants.ZIP_ID,
+                mBuilder.build(),
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC,
+            )
+        } else {
+            startForeground(NotificationConstants.ZIP_ID, mBuilder.build())
+        }
         initNotificationViews()
         super.onStartCommand(intent, flags, startId)
         super.progressHalted()
