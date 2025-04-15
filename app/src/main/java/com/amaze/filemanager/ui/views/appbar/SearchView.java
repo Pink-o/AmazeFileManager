@@ -52,20 +52,16 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -99,7 +95,8 @@ public class SearchView {
 
   private final AppCompatTextView recentHintTV;
   private final AppCompatTextView searchResultsHintTV;
-  private final AppCompatTextView deepSearchTV;
+  private final AppCompatButton deepSearchButton;
+  private final LinearLayout deepSearchContainer;
 
   private final ChipGroup recentChipGroup;
   private final RecyclerView recyclerView;
@@ -143,7 +140,8 @@ public class SearchView {
     recentChipGroup = mainActivity.findViewById(R.id.searchRecentItemsChipGroup);
     recentHintTV = mainActivity.findViewById(R.id.searchRecentHintTV);
     searchResultsHintTV = mainActivity.findViewById(R.id.searchResultsHintTV);
-    deepSearchTV = mainActivity.findViewById(R.id.searchDeepSearchTV);
+    deepSearchButton = mainActivity.findViewById(R.id.tryDeepSearchButton);
+    deepSearchContainer = mainActivity.findViewById(R.id.deepSearchContainer);
     recyclerView = mainActivity.findViewById(R.id.searchRecyclerView);
     searchResultsSortHintTV = mainActivity.findViewById(R.id.searchResultsSortHintTV);
     searchResultsSortButton = mainActivity.findViewById(R.id.searchResultsSortButton);
@@ -205,7 +203,7 @@ public class SearchView {
           return false;
         });
 
-    deepSearchTV.setOnClickListener(
+    deepSearchButton.setOnClickListener(
         v -> {
           String s = getSearchTerm();
 
@@ -225,11 +223,6 @@ public class SearchView {
 
             searchMode = 2;
 
-            deepSearchTV.setText(
-                getSpannableText(
-                    mainActivity.getString(R.string.not_finding_what_you_re_looking_for),
-                    mainActivity.getString(R.string.try_deep_search)));
-
           } else if (searchMode == 2) {
 
             mainActivity
@@ -240,7 +233,7 @@ public class SearchView {
                     mainActivity.getCurrentMainFragment().getViewLifecycleOwner(),
                     hybridFileParcelables -> updateResultList(hybridFileParcelables, s));
 
-            deepSearchTV.setVisibility(View.GONE);
+            deepSearchContainer.setVisibility(View.GONE);
           }
         });
 
@@ -272,12 +265,9 @@ public class SearchView {
     searchResultsHintTV.setVisibility(View.VISIBLE);
     searchResultsSortButton.setVisibility(View.VISIBLE);
     searchResultsSortHintTV.setVisibility(View.VISIBLE);
-    deepSearchTV.setVisibility(View.VISIBLE);
+    deepSearchContainer.setVisibility(View.VISIBLE);
+
     searchMode = 1;
-    deepSearchTV.setText(
-        getSpannableText(
-            mainActivity.getString(R.string.not_finding_what_you_re_looking_for),
-            mainActivity.getString(R.string.try_indexed_search)));
 
     mainActivity
         .getCurrentMainFragment()
@@ -356,11 +346,8 @@ public class SearchView {
 
   private void resetSearchMode() {
     searchMode = 0;
-    deepSearchTV.setText(
-        getSpannableText(
-            mainActivity.getString(R.string.not_finding_what_you_re_looking_for),
-            mainActivity.getString(R.string.try_indexed_search)));
-    deepSearchTV.setVisibility(View.GONE);
+
+    deepSearchContainer.setVisibility(View.GONE);
   }
 
   /**
@@ -616,29 +603,11 @@ public class SearchView {
   private void clearRecyclerView() {
     searchRecyclerViewAdapter.submitList(Collections.emptyList());
 
-    deepSearchTV.setVisibility(View.GONE);
+    deepSearchContainer.setVisibility(View.GONE);
 
     searchResultsHintTV.setVisibility(View.GONE);
     searchResultsSortHintTV.setVisibility(View.GONE);
     searchResultsSortButton.setVisibility(View.GONE);
-  }
-
-  private SpannableString getSpannableText(String s1, String s2) {
-
-    SpannableString spannableString = new SpannableString(s1 + " " + s2);
-
-    spannableString.setSpan(
-        new ForegroundColorSpan(mainActivity.getCurrentColorPreference().getAccent()),
-        s1.length() + 1,
-        spannableString.length(),
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    spannableString.setSpan(
-        new StyleSpan(Typeface.BOLD),
-        s1.length() + 1,
-        spannableString.length(),
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-    return spannableString;
   }
 
   /**
