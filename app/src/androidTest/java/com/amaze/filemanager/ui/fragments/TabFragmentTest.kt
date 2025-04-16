@@ -86,6 +86,29 @@ class TabFragmentTest {
     }
 
     /**
+     * This test causes a rotation to happen while the MainFragment detaches, to check if it
+     * fails. This could happen in reality, but should be very rare
+     */
+    @Test
+    fun testFragmentStateSavingDuringDetachment() {
+        activityRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+
+        // Get the TabFragment
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            val activity = activityRule.activity
+            val tabFragment =
+                activity.supportFragmentManager
+                    .findFragmentById(R.id.content_frame) as TabFragment
+
+            // Detach fragment through FragmentManager
+            activity.supportFragmentManager.beginTransaction().apply {
+                tabFragment.fragments.forEach { detach(it) }
+                commit()
+            }
+        }
+    }
+
+    /**
      * Check if the fragment state is saved correctly during a configuration change
      * by rotate the screen while swiping between the tabs.
      */
