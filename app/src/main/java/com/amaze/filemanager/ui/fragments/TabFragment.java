@@ -63,6 +63,7 @@ import android.view.animation.DecelerateInterpolator;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -84,7 +85,8 @@ public class TabFragment extends Fragment {
   private boolean savePaths;
   private FragmentManager fragmentManager;
 
-  final List<Fragment> fragments = new ArrayList<>();
+  @VisibleForTesting
+  public final List<Fragment> fragments = new ArrayList<>();
   private ScreenSlidePagerAdapter sectionsPagerAdapter;
   private ViewPager2 viewPager;
   private SharedPreferences sharedPrefs;
