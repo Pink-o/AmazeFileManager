@@ -85,8 +85,7 @@ public class TabFragment extends Fragment {
   private boolean savePaths;
   private FragmentManager fragmentManager;
 
-  @VisibleForTesting
-  public final List<Fragment> fragments = new ArrayList<>();
+  @VisibleForTesting public final List<Fragment> fragments = new ArrayList<>();
   private ScreenSlidePagerAdapter sectionsPagerAdapter;
   private ViewPager2 viewPager;
   private SharedPreferences sharedPrefs;
