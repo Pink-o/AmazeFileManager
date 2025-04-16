@@ -280,6 +280,7 @@
             android:name=".asynchronous.services.ftp.FtpService"
             android:enabled="true"
             android:exported="true"
+            android:foregroundServiceType="dataSync"
             android:permission="${applicationId}.permission.CONTROL_FTP_SERVER" />
 
         <service android:name=".asynchronous.services.ftp.FtpTileService"
