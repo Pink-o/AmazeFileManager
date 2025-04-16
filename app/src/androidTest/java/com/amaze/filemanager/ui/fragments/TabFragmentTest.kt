@@ -1,19 +1,29 @@
 package com.amaze.filemanager.ui.fragments
 
+import android.content.Context
 import android.content.pm.ActivityInfo
+import android.os.Build.VERSION.SDK_INT
+import android.os.Build.VERSION_CODES.TIRAMISU
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiSelector
 import com.amaze.filemanager.R
 import com.amaze.filemanager.ui.activities.MainActivity
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+
 
 /**
  * Tests for [TabFragment] functionality, mainly for
@@ -32,6 +42,48 @@ class TabFragmentTest {
     val storagePermissionRule: GrantPermissionRule =
         GrantPermissionRule
             .grant(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+    @Rule
+    @JvmField
+    val notificationPermissionRule: GrantPermissionRule = if(SDK_INT >= TIRAMISU) {
+        GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS)
+    } else {
+        GrantPermissionRule.grant()
+    }
+
+    /**
+     * From https://github.com/android/android-test/issues/1658#issue-1551755250
+     * HACK this grants access to external storage "manually" because other solutions don't seem
+     * to set the permission.
+     */
+    @Before
+    fun grantManageStoragePermission() {
+        val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+
+        val amazeResources = context.packageManager.getResourcesForApplication(context.packageName)
+        val grantPermissionExplanation = amazeResources.getString(R.string.grant_all_files_permission)
+
+        if (device.hasObject(By.text(grantPermissionExplanation))) {
+            // First press Amaze's grant button
+            onView(withText(R.string.grant)).perform(click())
+
+            // Identifier names are taken here:
+            // https://cs.android.com/android/platform/superproject/+/master:packages/apps/Settings/res/values/strings.xml
+            val resources = context.packageManager.getResourcesForApplication("com.android.settings")
+            val resId = resources.getIdentifier(
+                "permit_manage_external_storage",
+                "string",
+                "com.android.settings"
+            )
+            val permitManageExternalStorage = resources.getString(resId)
+
+            val grantToggle =
+                device.findObject(UiSelector().textMatches("(?i)$permitManageExternalStorage"))
+            grantToggle.click()
+            device.pressBack()
+        }
+    }
 
     /**
      * Check if the fragment state is saved correctly during a configuration change
