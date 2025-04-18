@@ -24,7 +24,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 /**
  * Tests for [TabFragment] functionality, mainly for
  * https://github.com/TeamAmaze/AmazeFileManager/issues/1555.
@@ -45,11 +44,12 @@ class TabFragmentTest {
 
     @Rule
     @JvmField
-    val notificationPermissionRule: GrantPermissionRule = if(SDK_INT >= TIRAMISU) {
-        GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS)
-    } else {
-        GrantPermissionRule.grant()
-    }
+    val notificationPermissionRule: GrantPermissionRule =
+        if (SDK_INT >= TIRAMISU) {
+            GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            GrantPermissionRule.grant()
+        }
 
     /**
      * From https://github.com/android/android-test/issues/1658#issue-1551755250
@@ -71,11 +71,12 @@ class TabFragmentTest {
             // Identifier names are taken here:
             // https://cs.android.com/android/platform/superproject/+/master:packages/apps/Settings/res/values/strings.xml
             val resources = context.packageManager.getResourcesForApplication("com.android.settings")
-            val resId = resources.getIdentifier(
-                "permit_manage_external_storage",
-                "string",
-                "com.android.settings"
-            )
+            val resId =
+                resources.getIdentifier(
+                    "permit_manage_external_storage",
+                    "string",
+                    "com.android.settings",
+                )
             val permitManageExternalStorage = resources.getString(resId)
 
             val grantToggle =
