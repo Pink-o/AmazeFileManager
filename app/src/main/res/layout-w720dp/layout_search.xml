@@ -107,6 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:visibility="gone"
@@ -129,12 +130,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:textAllCaps="false"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:paddingHorizontal="8dp"
                 android:minHeight="8dp"
                 android:paddingVertical="8dp"
                 android:background="@drawable/button_background"
-                android:text="@string/try_deep_search"
+                android:text="@string/try_indexed_search"
                 android:textColor="@color/primary_pink" />
 
 

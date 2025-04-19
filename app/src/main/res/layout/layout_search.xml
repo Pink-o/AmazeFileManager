@@ -94,7 +94,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 app:chipSpacing="4dp"
                 app:singleLine="true" />
 
@@ -115,21 +114,23 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/notFindingTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1.4"
                 android:text="@string/not_finding_what_you_re_looking_for"
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/tryDeepSearchButton"
                 style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.6"
                 android:layout_marginStart="4dp"
                 android:background="@drawable/button_background"
-                android:minHeight="8dp"
-                android:paddingVertical="8dp"
-                android:text="@string/try_deep_search"
+                android:minHeight="4dp"
+                android:paddingVertical="2dp"
+                android:text="@string/try_indexed_search"
                 android:textAllCaps="false"
                 android:textColor="@color/primary_pink"
                 android:textSize="14sp" />

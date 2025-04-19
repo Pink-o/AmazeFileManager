@@ -52,9 +52,14 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -223,6 +228,8 @@ public class SearchView {
 
             searchMode = 2;
 
+            deepSearchButton.setText(mainActivity.getString(R.string.try_deep_search));
+
           } else if (searchMode == 2) {
 
             mainActivity
@@ -266,8 +273,8 @@ public class SearchView {
     searchResultsSortButton.setVisibility(View.VISIBLE);
     searchResultsSortHintTV.setVisibility(View.VISIBLE);
     deepSearchContainer.setVisibility(View.VISIBLE);
-
     searchMode = 1;
+    deepSearchButton.setText(mainActivity.getString(R.string.try_indexed_search));
 
     mainActivity
         .getCurrentMainFragment()
@@ -346,7 +353,7 @@ public class SearchView {
 
   private void resetSearchMode() {
     searchMode = 0;
-
+    deepSearchButton.setText(mainActivity.getString(R.string.try_indexed_search));
     deepSearchContainer.setVisibility(View.GONE);
   }
 
@@ -608,6 +615,24 @@ public class SearchView {
     searchResultsHintTV.setVisibility(View.GONE);
     searchResultsSortHintTV.setVisibility(View.GONE);
     searchResultsSortButton.setVisibility(View.GONE);
+  }
+
+  private SpannableString getSpannableText(String s1, String s2) {
+
+    SpannableString spannableString = new SpannableString(s1 + " " + s2);
+
+    spannableString.setSpan(
+        new ForegroundColorSpan(mainActivity.getCurrentColorPreference().getAccent()),
+        s1.length() + 1,
+        spannableString.length(),
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    spannableString.setSpan(
+        new StyleSpan(Typeface.BOLD),
+        s1.length() + 1,
+        spannableString.length(),
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+    return spannableString;
   }
 
   /**
