@@ -128,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
                 android:background="@drawable/button_background"
+                android:padding="1dp"
                 android:text="@string/try_indexed_search"
                 android:textAllCaps="false"
                 android:textColor="@color/primary_pink"

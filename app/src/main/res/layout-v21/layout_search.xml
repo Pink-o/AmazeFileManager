@@ -131,6 +131,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
+                android:padding="1dp"
                 android:background="@drawable/ripple_button_background"
                 android:text="@string/try_indexed_search"
                 android:textAllCaps="false"
