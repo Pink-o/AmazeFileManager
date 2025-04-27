@@ -110,7 +110,13 @@ class NetCopyConnectionInfo(url: String) {
                      * this branch must be integer
                      */
                         try {
-                            it[7].toInt()
+                            // Need to make sure port number is in range
+                            if (it[7].toInt() in 1..65535) {
+                                it[7].toInt()
+                            } else {
+                                LOGGER.warn("Port number is out of range: ${it[7]}")
+                                0
+                            }
                         } catch (e: NumberFormatException) {
                             LOGGER.warn("Unable to parse port number: ${it[7]}", e)
                             0

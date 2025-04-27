@@ -346,6 +346,9 @@ class NetCopyConnectionInfoTest {
         NetCopyConnectionInfo("ssh://user:pass@127.0.0.1:21097/a/b/c/d/e").run {
             assertEquals(21097, this.port)
         }
+        NetCopyConnectionInfo("ssh://user:pass@127.0.0.1:99999/a/b/c/d/e").run {
+            assertEquals(0, this.port)
+        }
         NetCopyConnectionInfo("ssh://user:pass@127.0.0.1/a/b/c/d/e").run {
             assertEquals(0, this.port)
         }
