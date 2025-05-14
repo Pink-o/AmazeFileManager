@@ -23,7 +23,7 @@ package com.amaze.filemanager.filesystem
 import android.Manifest
 import android.content.Context
 import android.os.Build
-import android.os.Build.VERSION_CODES.KITKAT
+import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.os.Build.VERSION_CODES.P
 import android.os.Looper
 import android.os.storage.StorageManager
@@ -34,6 +34,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode
+import com.amaze.filemanager.shadows.ShadowFileUtils
 import com.amaze.filemanager.shadows.ShadowMultiDex
 import com.amaze.filemanager.shadows.ShadowSmbUtil
 import com.amaze.filemanager.test.ShadowPasswordUtil
@@ -44,7 +45,9 @@ import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
@@ -62,27 +65,39 @@ import org.robolectric.shadows.ShadowSQLiteConnection
         ShadowSmbUtil::class,
         ShadowMultiDex::class,
         ShadowTabHandler::class,
-        ShadowPasswordUtil::class
+        ShadowFileUtils::class,
+        ShadowPasswordUtil::class,
     ],
-    sdk = [KITKAT, P, Build.VERSION_CODES.R]
+    sdk = [LOLLIPOP, P, Build.VERSION_CODES.R],
 )
 abstract class AbstractOperationsTestBase {
-
     private var ctx: Context? = null
 
-    private val blankCallback = object : Operations.ErrorCallBack {
-        override fun exists(file: HybridFile?) = Unit
-        override fun launchSAF(file: HybridFile?) = Unit
-        override fun launchSAF(file: HybridFile?, file1: HybridFile?) = Unit
-        override fun done(hFile: HybridFile?, b: Boolean) = Unit
-        override fun invalidName(file: HybridFile?) = Unit
-    }
+    private val blankCallback =
+        object : Operations.ErrorCallBack {
+            override fun exists(file: HybridFile?) = Unit
+
+            override fun launchSAF(file: HybridFile?) = Unit
+
+            override fun launchSAF(
+                file: HybridFile?,
+                file1: HybridFile?,
+            ) = Unit
+
+            override fun done(
+                hFile: HybridFile?,
+                b: Boolean,
+            ) = Unit
+
+            override fun invalidName(file: HybridFile?) = Unit
+        }
 
     @Rule
     @JvmField
     @RequiresApi(Build.VERSION_CODES.R)
-    val allFilesPermissionRule = GrantPermissionRule
-        .grant(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+    val allFilesPermissionRule =
+        GrantPermissionRule
+            .grant(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
 
     /**
      * Test case setup.
@@ -110,7 +125,7 @@ abstract class AbstractOperationsTestBase {
     protected fun testRenameFileAccessDenied(
         fileMode: OpenMode,
         oldFilePath: String,
-        newFilePath: String
+        newFilePath: String,
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) TestUtils.initializeInternalStorage()
 
@@ -130,7 +145,7 @@ abstract class AbstractOperationsTestBase {
                     assertEquals(MainActivity.TAG_INTENT_FILTER_GENERAL, this.action)
                     this
                         .getParcelableArrayListExtra<HybridFileParcelable>(
-                            MainActivity.TAG_INTENT_FILTER_FAILED_OPS
+                            MainActivity.TAG_INTENT_FILTER_FAILED_OPS,
                         )
                         .run {
                             assertNotNull(this)

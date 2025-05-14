@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
+ * Copyright (C) 2014-2024 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
  * Emmanuel Messulam<emmanuelbendavid@gmail.com>, Raymond Lai <airwave209gt at gmail.com> and Contributors.
  *
  * This file is part of Amaze File Manager.
@@ -209,6 +209,10 @@ public class GeneralDialogCreation {
         sharedPreferences.getBoolean(
             PreferencesConstants.PREFERENCE_DELETE_CONFIRMATION,
             PreferencesConstants.DEFAULT_PREFERENCE_DELETE_CONFIRMATION);
+    boolean deletePermanently =
+        sharedPreferences.getBoolean(
+            PreferencesConstants.PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION,
+            PreferencesConstants.DEFAULT_PREFERENCE_DELETE_PERMANENTLY_WITHOUT_CONFIRMATION);
     View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_delete, null);
     TextView deleteDisclaimerTextView = dialogView.findViewById(R.id.dialog_delete_disclaimer);
     final AppCompatCheckBox deletePermanentlyCheckbox =
@@ -216,7 +220,11 @@ public class GeneralDialogCreation {
     if (positions.get(0).generateBaseFile().isLocal()) {
       // FIXME: make sure dialog is not shown for zero items
       // allow trash bin delete only for local files for now
-      deletePermanentlyCheckbox.setVisibility(View.VISIBLE);
+      if (deletePermanently) {
+        deletePermanentlyCheckbox.setVisibility(View.GONE);
+      } else {
+        deletePermanentlyCheckbox.setVisibility(View.VISIBLE);
+      }
     } else {
       deleteDisclaimerTextView.setText(context.getString(R.string.dialog_delete_disclaimer));
     }

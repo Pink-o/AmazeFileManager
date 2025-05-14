@@ -21,9 +21,10 @@
 package com.amaze.filemanager.asynchronous.asynctasks.ssh
 
 import android.os.Build.VERSION_CODES
-import android.os.Build.VERSION_CODES.KITKAT
+import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.os.Build.VERSION_CODES.P
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.amaze.filemanager.shadows.ShadowFileUtils
 import com.amaze.filemanager.shadows.ShadowMultiDex
 import com.amaze.filemanager.test.ShadowTabHandler
 import io.reactivex.Observable
@@ -43,11 +44,10 @@ import org.robolectric.annotation.Config
  */
 @RunWith(AndroidJUnit4::class)
 @Config(
-    shadows = [ShadowMultiDex::class, ShadowTabHandler::class],
-    sdk = [KITKAT, P, VERSION_CODES.R]
+    shadows = [ShadowMultiDex::class, ShadowTabHandler::class, ShadowFileUtils::class],
+    sdk = [LOLLIPOP, P, VERSION_CODES.R],
 )
 class PemToKeyPairObservableEd25519Test {
-
     companion object {
         // public key for authorized_keys: ssh-ed25519
         // AAAAC3NzaC1lZDI1NTE5AAAAIGxJHFewxU9tJn9hUq9e2C/+ELFw83NpmJ5NLFOzU7O3 test-openssh-key
@@ -59,7 +59,7 @@ class PemToKeyPairObservableEd25519Test {
                 "AAAECjSjwwMXPzbZWq/EBoA4HA9Lr7B1/Tw78K+k1zqAJwA2xJHFewxU9tJn9hUq9e2C/+\n" +
                 "ELFw83NpmJ5NLFOzU7O3AAAADmFpcndhdmVAaHN2MDEwAQIDBAUGBw==\n" +
                 "-----END OPENSSH PRIVATE KEY-----"
-            )
+        )
 
         // Passphrase = 12345678
         // public key for authorized_keys: ssh-ed25519
@@ -73,7 +73,7 @@ class PemToKeyPairObservableEd25519Test {
                 "wrHcd/Z92eQ0E7NV6b6LnghGYlyCjpSBW+mxa0AAYPD21c95d/HvJF6zxQl/IKCCLdOrr/\n" +
                 "ilMCSIGQEdg71hA3MMZsRbUvazsnZTZXD9PLI=\n" +
                 "-----END OPENSSH PRIVATE KEY-----"
-            )
+        )
     }
 
     /**
@@ -107,15 +107,16 @@ class PemToKeyPairObservableEd25519Test {
         val task = PemToKeyPairObservable(encryptedOpenSshKey)
         val field = PemToKeyPairObservable::class.java.getDeclaredField("passwordFinder")
         field.isAccessible = true
-        field[task] = object : PasswordFinder {
-            override fun reqPassword(resource: Resource<*>?): CharArray {
-                return "12345678".toCharArray()
-            }
+        field[task] =
+            object : PasswordFinder {
+                override fun reqPassword(resource: Resource<*>?): CharArray {
+                    return "12345678".toCharArray()
+                }
 
-            override fun shouldRetry(resource: Resource<*>?): Boolean {
-                return false
+                override fun shouldRetry(resource: Resource<*>?): Boolean {
+                    return false
+                }
             }
-        }
         val result = Observable.create(task).subscribeOn(Schedulers.single()).blockingFirst()
         Assert.assertNotNull(result)
         Assert.assertNotNull(result.public)

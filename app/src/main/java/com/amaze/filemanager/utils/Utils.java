@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
+ * Copyright (C) 2014-2024 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
  * Emmanuel Messulam<emmanuelbendavid@gmail.com>, Raymond Lai <airwave209gt at gmail.com> and Contributors.
  *
  * This file is part of Amaze File Manager.
@@ -128,7 +128,8 @@ public class Utils {
     } else {
       Drawable drawable =
           DrawableCompat.wrap(
-              ContextCompat.getDrawable(box.getContext(), R.drawable.abc_btn_check_material));
+              ContextCompat.getDrawable(
+                  box.getContext(), com.google.android.material.R.drawable.abc_btn_check_material));
       DrawableCompat.setTintList(drawable, sl);
       box.setButtonDrawable(drawable);
     }

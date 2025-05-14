@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
+ * Copyright (C) 2014-2024 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
  * Emmanuel Messulam<emmanuelbendavid@gmail.com>, Raymond Lai <airwave209gt at gmail.com> and Contributors.
  *
  * This file is part of Amaze File Manager.
@@ -122,7 +122,7 @@ public class MainActivityHelper {
         @Override
         public void onReceive(Context context, Intent intent) {
           if (intent != null) {
-            if (intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
+            if (Intent.ACTION_MEDIA_MOUNTED.equals(intent.getAction())) {
               Toast.makeText(mainActivity, "Media Mounted", Toast.LENGTH_SHORT).show();
               String a = intent.getData().getPath();
               if (a != null
@@ -134,8 +134,7 @@ public class MainActivityHelper {
               } else {
                 mainActivity.getDrawer().refreshDrawer();
               }
-            } else if (intent.getAction().equals(Intent.ACTION_MEDIA_UNMOUNTED)) {
-
+            } else if (Intent.ACTION_MEDIA_UNMOUNTED.equals(intent.getAction())) {
               mainActivity.getDrawer().refreshDrawer();
             }
           }

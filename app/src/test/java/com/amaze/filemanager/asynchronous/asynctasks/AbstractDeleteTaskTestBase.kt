@@ -23,7 +23,7 @@ package com.amaze.filemanager.asynchronous.asynctasks
 import android.Manifest
 import android.content.Context
 import android.os.Build
-import android.os.Build.VERSION_CODES.KITKAT
+import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.os.Build.VERSION_CODES.P
 import android.os.Looper
 import android.os.storage.StorageManager
@@ -35,6 +35,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.amaze.filemanager.R
 import com.amaze.filemanager.filesystem.HybridFileParcelable
+import com.amaze.filemanager.shadows.ShadowFileUtils
 import com.amaze.filemanager.shadows.ShadowMultiDex
 import com.amaze.filemanager.shadows.ShadowSmbUtil
 import com.amaze.filemanager.test.ShadowPasswordUtil
@@ -45,7 +46,11 @@ import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
@@ -62,19 +67,20 @@ import org.robolectric.shadows.ShadowToast
         ShadowMultiDex::class,
         ShadowSmbUtil::class,
         ShadowTabHandler::class,
-        ShadowPasswordUtil::class
+        ShadowFileUtils::class,
+        ShadowPasswordUtil::class,
     ],
-    sdk = [KITKAT, P, Build.VERSION_CODES.R]
+    sdk = [LOLLIPOP, P, Build.VERSION_CODES.R],
 )
 abstract class AbstractDeleteTaskTestBase {
-
     private var ctx: Context? = null
 
     @Rule
     @JvmField
     @RequiresApi(Build.VERSION_CODES.R)
-    val allFilesPermissionRule = GrantPermissionRule
-        .grant(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+    val allFilesPermissionRule =
+        GrantPermissionRule
+            .grant(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
 
     /**
      * Test case setup.
@@ -134,7 +140,7 @@ abstract class AbstractDeleteTaskTestBase {
                 }!!.apply {
                     assertEquals(MainActivity.TAG_INTENT_FILTER_GENERAL, action)
                     getParcelableArrayListExtra<HybridFileParcelable>(
-                        MainActivity.TAG_INTENT_FILTER_FAILED_OPS
+                        MainActivity.TAG_INTENT_FILTER_FAILED_OPS,
                     )
                         .run {
                             assertTrue(size > 0)

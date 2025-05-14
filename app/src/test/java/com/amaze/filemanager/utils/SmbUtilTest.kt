@@ -21,7 +21,7 @@
 package com.amaze.filemanager.utils
 
 import android.os.Build
-import android.os.Build.VERSION_CODES.KITKAT
+import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.os.Build.VERSION_CODES.P
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -46,11 +46,10 @@ import org.robolectric.annotation.Config
 @Suppress("StringLiteralDuplication")
 @RunWith(AndroidJUnit4::class)
 @Config(
-    sdk = [KITKAT, P, Build.VERSION_CODES.R],
-    shadows = [ShadowPasswordUtil::class, ShadowSmbUtil::class]
+    sdk = [LOLLIPOP, P, Build.VERSION_CODES.R],
+    shadows = [ShadowPasswordUtil::class, ShadowSmbUtil::class],
 )
 class SmbUtilTest {
-
     /**
      * Test encrypt/decrypt SMB URIs.
      */
@@ -80,6 +79,20 @@ class SmbUtilTest {
     }
 
     /**
+     * Test encrypt/decrypt FTP(S) URIs.
+     */
+    @Test
+    fun testEncryptDecryptFtpsWithExtraParams() {
+        val path = "ftps://root:toor@127.0.0.1?tls=explicit"
+        val encrypted = getSmbEncryptedPath(ApplicationProvider.getApplicationContext(), path)
+        assertNotEquals(path, encrypted)
+        assertTrue(encrypted.startsWith("ftps://root:"))
+        assertTrue(encrypted.endsWith("@127.0.0.1?tls=explicit"))
+        val decrypted = getSmbDecryptedPath(ApplicationProvider.getApplicationContext(), encrypted)
+        assertEquals(path, decrypted)
+    }
+
+    /**
      * Test encrypt/decrypt URIs without username and password. It should stay the same.
      */
     @Test
@@ -87,7 +100,7 @@ class SmbUtilTest {
         val path = "smb://127.0.0.1"
         assertEquals(
             path,
-            getSmbEncryptedPath(ApplicationProvider.getApplicationContext(), path)
+            getSmbEncryptedPath(ApplicationProvider.getApplicationContext(), path),
         )
     }
 
@@ -99,7 +112,7 @@ class SmbUtilTest {
         val path = "smb://toor@127.0.0.1"
         assertEquals(
             path,
-            getSmbEncryptedPath(ApplicationProvider.getApplicationContext(), path)
+            getSmbEncryptedPath(ApplicationProvider.getApplicationContext(), path),
         )
     }
 
@@ -110,23 +123,23 @@ class SmbUtilTest {
     fun testCheckFolder() {
         assertEquals(
             DOESNT_EXIST,
-            checkFolder("smb://user:password@5.6.7.8/newfolder/DummyFolder")
+            checkFolder("smb://user:password@5.6.7.8/newfolder/DummyFolder"),
         )
         assertEquals(
             DOESNT_EXIST,
-            checkFolder("smb://user:password@5.6.7.8/newfolder/resume.doc")
+            checkFolder("smb://user:password@5.6.7.8/newfolder/resume.doc"),
         )
         assertEquals(
             WRITABLE_ON_REMOTE,
-            checkFolder("smb://user:password@5.6.7.8/newfolder/Documents")
+            checkFolder("smb://user:password@5.6.7.8/newfolder/Documents"),
         )
         assertEquals(
             DOESNT_EXIST,
-            checkFolder("smb://user:password@5.6.7.8/newfolder/wirebroken.log")
+            checkFolder("smb://user:password@5.6.7.8/newfolder/wirebroken.log"),
         )
         assertEquals(
             DOESNT_EXIST,
-            checkFolder("smb://user:password@5.6.7.8/newfolder/failcheck")
+            checkFolder("smb://user:password@5.6.7.8/newfolder/failcheck"),
         )
     }
 

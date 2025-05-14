@@ -24,7 +24,7 @@ import android.Manifest
 import android.content.Context
 import android.os.Build
 import android.os.Build.VERSION_CODES
-import android.os.Build.VERSION_CODES.KITKAT
+import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.os.Build.VERSION_CODES.P
 import android.os.storage.StorageManager
 import androidx.annotation.NonNull
@@ -54,13 +54,13 @@ import org.robolectric.shadows.ShadowStorageManager
  */
 @RunWith(AndroidJUnit4::class)
 @Config(
-    sdk = [KITKAT, P, VERSION_CODES.R],
+    sdk = [LOLLIPOP, P, VERSION_CODES.R],
     shadows = [
         ShadowMultiDex::class,
         ShadowStorageManager::class,
         ShadowPasswordUtil::class,
-        ShadowSmbFile::class
-    ]
+        ShadowSmbFile::class,
+    ],
 )
 /*
  * Need to make LooperMode PAUSED and flush the main looper before activity can show up.
@@ -69,7 +69,6 @@ import org.robolectric.shadows.ShadowStorageManager
  */
 @LooperMode(LooperMode.Mode.PAUSED)
 abstract class AbstractMainActivityTestBase {
-
     @Rule
     @NonNull
     @JvmField
@@ -98,8 +97,8 @@ abstract class AbstractMainActivityTestBase {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Shadows.shadowOf(
                 ApplicationProvider.getApplicationContext<Context>().getSystemService(
-                    StorageManager::class.java
-                )
+                    StorageManager::class.java,
+                ),
             ).resetStorageVolumeList()
         }
     }

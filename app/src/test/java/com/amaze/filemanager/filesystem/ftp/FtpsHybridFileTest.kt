@@ -33,13 +33,13 @@ import org.apache.ftpserver.ssl.impl.DefaultSslConfiguration
 import org.json.JSONObject
 import org.junit.Ignore
 import java.security.KeyStore
+import java.security.cert.CertificateFactory
+import java.security.cert.X509Certificate
 import javax.net.ssl.KeyManagerFactory
 import javax.net.ssl.TrustManagerFactory
-import javax.security.cert.X509Certificate
 
 @Ignore
 open class FtpsHybridFileTest : FtpHybridFileTest() {
-
     private lateinit var keyStore: KeyStore
     private lateinit var keyStorePassword: CharArray
     protected lateinit var certInfo: JSONObject
@@ -58,35 +58,42 @@ open class FtpsHybridFileTest : FtpHybridFileTest() {
         keyStorePassword = BuildConfig.FTP_SERVER_KEYSTORE_PASSWORD.toCharArray()
         keyStore.load(
             AppConfig.getInstance().resources.openRawResource(R.raw.key),
-            keyStorePassword
+            keyStorePassword,
         )
-        certInfo = JSONObject(
-            X509CertificateUtil.parse(
-                X509Certificate.getInstance(keyStore.getCertificate("ftpserver").encoded)
+        certInfo =
+            JSONObject(
+                X509CertificateUtil.parse(
+                    CertificateFactory.getInstance(
+                        "X.509",
+                    ).generateCertificate(
+                        keyStore.getCertificate("ftpserver").encoded.inputStream(),
+                    ) as X509Certificate,
+                ),
             )
-        )
         super.setUp()
     }
 
-    override fun saveConnectionSettings() =
-        TestUtils.saveFtpConnectionSettings(USERNAME, PASSWORD, certInfo, PORT)
+    override fun saveConnectionSettings() = TestUtils.saveFtpConnectionSettings(USERNAME, PASSWORD, certInfo, PORT)
 
     override fun createDefaultFtpServerListener(): Listener {
-        val keyManagerFactory = KeyManagerFactory
-            .getInstance(KeyManagerFactory.getDefaultAlgorithm())
+        val keyManagerFactory =
+            KeyManagerFactory
+                .getInstance(KeyManagerFactory.getDefaultAlgorithm())
         keyManagerFactory.init(keyStore, keyStorePassword)
-        val trustManagerFactory = TrustManagerFactory
-            .getInstance(TrustManagerFactory.getDefaultAlgorithm())
+        val trustManagerFactory =
+            TrustManagerFactory
+                .getInstance(TrustManagerFactory.getDefaultAlgorithm())
         trustManagerFactory.init(keyStore)
         return ListenerFactory().apply {
-            sslConfiguration = DefaultSslConfiguration(
-                keyManagerFactory,
-                trustManagerFactory,
-                ClientAuth.WANT,
-                "TLSv1.2",
-                null,
-                "ftpserver"
-            )
+            sslConfiguration =
+                DefaultSslConfiguration(
+                    keyManagerFactory,
+                    trustManagerFactory,
+                    ClientAuth.WANT,
+                    "TLSv1.2",
+                    null,
+                    "ftpserver",
+                )
             isImplicitSsl = true
             port = ftpPort
         }.createListener()

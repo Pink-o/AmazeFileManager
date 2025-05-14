@@ -26,6 +26,7 @@ import com.amaze.filemanager.utils.smb.SmbDeviceScannerObservable.DiscoverDevice
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
 import java.net.InetAddress
 
@@ -35,7 +36,6 @@ import java.net.InetAddress
  * Uses a series of [DiscoverDeviceStrategy] instances to discover nodes.
  */
 class SmbDeviceScannerObservable : Observable<ComputerParcelable>() {
-
     /**
      * Device discovery strategy interface.
      */
@@ -51,10 +51,10 @@ class SmbDeviceScannerObservable : Observable<ComputerParcelable>() {
         fun onCancel()
     }
 
-    var discoverDeviceStrategies: Array<DiscoverDeviceStrategy> =
+    private var discoverDeviceStrategies: Array<DiscoverDeviceStrategy> =
         arrayOf(
             WsddDiscoverDeviceStrategy(),
-            SameSubnetDiscoverDeviceStrategy()
+            SameSubnetDiscoverDeviceStrategy(),
         )
         @VisibleForTesting set
 
@@ -62,7 +62,7 @@ class SmbDeviceScannerObservable : Observable<ComputerParcelable>() {
 
     private lateinit var observer: Observer<in ComputerParcelable>
 
-    private lateinit var disposable: Disposable
+    private var disposable: Disposable = Disposables.empty()
 
     /**
      * Stop discovering hosts. Notify containing strategies to stop, then stop the created
@@ -71,6 +71,9 @@ class SmbDeviceScannerObservable : Observable<ComputerParcelable>() {
     fun stop() {
         if (!disposable.isDisposed) {
             disposable.dispose()
+        }
+        discoverDeviceStrategies.forEach { strategy ->
+            strategy.onCancel()
         }
         observer.onComplete()
     }
@@ -83,18 +86,19 @@ class SmbDeviceScannerObservable : Observable<ComputerParcelable>() {
      */
     override fun subscribeActual(observer: Observer<in ComputerParcelable>) {
         this.observer = observer
-        this.disposable = merge(
-            discoverDeviceStrategies.map { strategy ->
-                fromCallable {
-                    strategy.discoverDevices { addr ->
-                        observer.onNext(ComputerParcelable(addr.addr, addr.name))
-                    }
-                }.subscribeOn(Schedulers.io())
-            }
-        ).observeOn(Schedulers.computation()).doOnComplete {
-            discoverDeviceStrategies.forEach { strategy ->
-                strategy.onCancel()
-            }
-        }.subscribe()
+        this.disposable =
+            merge(
+                discoverDeviceStrategies.map { strategy ->
+                    fromCallable {
+                        strategy.discoverDevices { addr ->
+                            observer.onNext(ComputerParcelable(addr.addr, addr.name))
+                        }
+                    }.subscribeOn(Schedulers.io())
+                },
+            ).observeOn(Schedulers.computation()).doOnComplete {
+                discoverDeviceStrategies.forEach { strategy ->
+                    strategy.onCancel()
+                }
+            }.subscribe()
     }
 }

@@ -21,7 +21,7 @@
 package com.amaze.filemanager.utils.smb
 
 import android.os.Build.VERSION_CODES
-import android.os.Build.VERSION_CODES.KITKAT
+import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.os.Build.VERSION_CODES.P
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.amaze.filemanager.utils.NetworkUtil
@@ -38,9 +38,8 @@ import java.net.InetAddress
  * Base class for [SmbDeviceScannerObservable.DiscoverDeviceStrategy] tests.
  */
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [KITKAT, P, VERSION_CODES.R])
+@Config(sdk = [LOLLIPOP, P, VERSION_CODES.R])
 abstract class AbstractSubnetDiscoverDevicesStrategyTests {
-
     /**
      * Post test cleanup.
      */
@@ -60,12 +59,16 @@ abstract class AbstractSubnetDiscoverDevicesStrategyTests {
         mockkStatic(NetworkUtil::class)
         every { NetworkUtil.isConnectedToWifi(any()) } returns true
         every { NetworkUtil.isConnectedToLocalNetwork(any()) } returns true
-        every { NetworkUtil.getLocalInetAddress(any()) } returns mockk<InetAddress>().also {
-            every { it.hostName } returns "192.168.233.240"
-        }
+        every { NetworkUtil.getLocalInetAddress(any()) } returns
+            mockk<InetAddress>().also {
+                every { it.hostName } returns "192.168.233.240"
+            }
     }
 
-    protected fun mockInetAddress(hostName: String, hostAddress: String): InetAddress {
+    protected fun mockInetAddress(
+        hostName: String,
+        hostAddress: String,
+    ): InetAddress {
         val upHost = mockk<InetAddress>()
         every { upHost.hostName } returns hostName
         every { upHost.hostAddress } returns hostAddress

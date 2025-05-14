@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
+ * Copyright (C) 2014-2024 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
  * Emmanuel Messulam<emmanuelbendavid@gmail.com>, Raymond Lai <airwave209gt at gmail.com> and Contributors.
  *
  * This file is part of Amaze File Manager.
@@ -20,7 +20,7 @@
 
 package com.amaze.filemanager.filesystem.smb;
 
-import static android.os.Build.VERSION_CODES.KITKAT;
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static android.os.Build.VERSION_CODES.P;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -44,7 +44,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import jcifs.ResolverType;
 import jcifs.context.BaseContext;
 
-@Config(sdk = {KITKAT, P, Build.VERSION_CODES.R})
+@Config(sdk = {LOLLIPOP, P, Build.VERSION_CODES.R})
 @RunWith(AndroidJUnit4.class)
 public class CifsContextsTest {
 

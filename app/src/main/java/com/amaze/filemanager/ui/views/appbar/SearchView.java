@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
+ * Copyright (C) 2014-2024 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
  * Emmanuel Messulam<emmanuelbendavid@gmail.com>, Raymond Lai <airwave209gt at gmail.com> and Contributors.
  *
  * This file is part of Amaze File Manager.
@@ -49,7 +49,6 @@ import com.google.gson.reflect.TypeToken;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -67,6 +66,8 @@ import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -99,7 +100,8 @@ public class SearchView {
 
   private final AppCompatTextView recentHintTV;
   private final AppCompatTextView searchResultsHintTV;
-  private final AppCompatTextView deepSearchTV;
+  private final AppCompatButton deepSearchButton;
+  private final LinearLayout deepSearchContainer;
 
   private final ChipGroup recentChipGroup;
   private final RecyclerView recyclerView;
@@ -131,7 +133,6 @@ public class SearchView {
   private SortType sortType = defaultSortType;
 
   @SuppressWarnings("ConstantConditions")
-  @SuppressLint("NotifyDataSetChanged")
   public SearchView(final AppBar appbar, MainActivity mainActivity) {
 
     this.mainActivity = mainActivity;
@@ -144,7 +145,8 @@ public class SearchView {
     recentChipGroup = mainActivity.findViewById(R.id.searchRecentItemsChipGroup);
     recentHintTV = mainActivity.findViewById(R.id.searchRecentHintTV);
     searchResultsHintTV = mainActivity.findViewById(R.id.searchResultsHintTV);
-    deepSearchTV = mainActivity.findViewById(R.id.searchDeepSearchTV);
+    deepSearchButton = mainActivity.findViewById(R.id.tryDeepSearchButton);
+    deepSearchContainer = mainActivity.findViewById(R.id.deepSearchContainer);
     recyclerView = mainActivity.findViewById(R.id.searchRecyclerView);
     searchResultsSortHintTV = mainActivity.findViewById(R.id.searchResultsSortHintTV);
     searchResultsSortButton = mainActivity.findViewById(R.id.searchResultsSortButton);
@@ -206,7 +208,7 @@ public class SearchView {
           return false;
         });
 
-    deepSearchTV.setOnClickListener(
+    deepSearchButton.setOnClickListener(
         v -> {
           String s = getSearchTerm();
 
@@ -226,10 +228,7 @@ public class SearchView {
 
             searchMode = 2;
 
-            deepSearchTV.setText(
-                getSpannableText(
-                    mainActivity.getString(R.string.not_finding_what_you_re_looking_for),
-                    mainActivity.getString(R.string.try_deep_search)));
+            deepSearchButton.setText(mainActivity.getString(R.string.try_deep_search));
 
           } else if (searchMode == 2) {
 
@@ -241,7 +240,7 @@ public class SearchView {
                     mainActivity.getCurrentMainFragment().getViewLifecycleOwner(),
                     hybridFileParcelables -> updateResultList(hybridFileParcelables, s));
 
-            deepSearchTV.setVisibility(View.GONE);
+            deepSearchContainer.setVisibility(View.GONE);
           }
         });
 
@@ -273,12 +272,9 @@ public class SearchView {
     searchResultsHintTV.setVisibility(View.VISIBLE);
     searchResultsSortButton.setVisibility(View.VISIBLE);
     searchResultsSortHintTV.setVisibility(View.VISIBLE);
-    deepSearchTV.setVisibility(View.VISIBLE);
+    deepSearchContainer.setVisibility(View.VISIBLE);
     searchMode = 1;
-    deepSearchTV.setText(
-        getSpannableText(
-            mainActivity.getString(R.string.not_finding_what_you_re_looking_for),
-            mainActivity.getString(R.string.try_indexed_search)));
+    deepSearchButton.setText(mainActivity.getString(R.string.try_indexed_search));
 
     mainActivity
         .getCurrentMainFragment()
@@ -357,11 +353,8 @@ public class SearchView {
 
   private void resetSearchMode() {
     searchMode = 0;
-    deepSearchTV.setText(
-        getSpannableText(
-            mainActivity.getString(R.string.not_finding_what_you_re_looking_for),
-            mainActivity.getString(R.string.try_indexed_search)));
-    deepSearchTV.setVisibility(View.GONE);
+    deepSearchButton.setText(mainActivity.getString(R.string.try_indexed_search));
+    deepSearchContainer.setVisibility(View.GONE);
   }
 
   /**
@@ -372,11 +365,14 @@ public class SearchView {
    * @param searchTerm The search term that resulted in the search results
    */
   private void updateResultList(List<SearchResult> newResults, String searchTerm) {
-    ArrayList<SearchResult> items = new ArrayList<>(newResults);
-    Collections.sort(
-        items, new SearchResultListSorter(DirSortBy.NONE_ON_TOP, sortType, searchTerm));
-    searchRecyclerViewAdapter.submitList(items);
-    searchRecyclerViewAdapter.notifyDataSetChanged();
+    if (newResults != null) {
+      ArrayList<SearchResult> items = new ArrayList<>(newResults);
+      Collections.sort(
+          items, new SearchResultListSorter(DirSortBy.NONE_ON_TOP, sortType, searchTerm));
+      searchRecyclerViewAdapter.submitList(items);
+    } else {
+      Toast.makeText(mainActivity, "No search result found", Toast.LENGTH_SHORT).show();
+    }
   }
 
   /** show search view with a circular reveal animation */
@@ -510,7 +506,9 @@ public class SearchView {
 
     orderDrawable.setColorFilter(
         new PorterDuffColorFilter(
-            mainActivity.getResources().getColor(R.color.accent_material_light),
+            mainActivity
+                .getResources()
+                .getColor(com.google.android.material.R.color.accent_material_light),
             PorterDuff.Mode.SRC_ATOP));
     searchResultsSortButton.setCompoundDrawablesWithIntrinsicBounds(
         null, null, orderDrawable, null);
@@ -609,12 +607,10 @@ public class SearchView {
     }
   }
 
-  @SuppressLint("NotifyDataSetChanged")
   private void clearRecyclerView() {
-    searchRecyclerViewAdapter.submitList(new ArrayList<>());
-    searchRecyclerViewAdapter.notifyDataSetChanged();
+    searchRecyclerViewAdapter.submitList(Collections.emptyList());
 
-    deepSearchTV.setVisibility(View.GONE);
+    deepSearchContainer.setVisibility(View.GONE);
 
     searchResultsHintTV.setVisibility(View.GONE);
     searchResultsSortHintTV.setVisibility(View.GONE);

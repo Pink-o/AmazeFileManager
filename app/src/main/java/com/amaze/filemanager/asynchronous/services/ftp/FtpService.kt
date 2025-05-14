@@ -27,6 +27,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ServiceInfo
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.KITKAT
 import android.os.Build.VERSION_CODES.LOLLIPOP
@@ -38,6 +39,7 @@ import android.os.IBinder
 import android.os.PowerManager
 import android.os.SystemClock
 import android.provider.DocumentsContract
+import androidx.core.app.ServiceCompat
 import androidx.preference.PreferenceManager
 import com.amaze.filemanager.BuildConfig
 import com.amaze.filemanager.R
@@ -65,7 +67,7 @@ import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.KeyStore
-import java.util.*
+import java.util.LinkedList
 import javax.net.ssl.KeyManagerFactory
 import javax.net.ssl.TrustManagerFactory
 import kotlin.concurrent.thread
@@ -81,7 +83,10 @@ class FtpService : Service(), Runnable {
 
     // Service will broadcast via event bus when server start/stop
     enum class FtpReceiverActions {
-        STARTED, STARTED_FROM_TILE, STOPPED, FAILED_TO_START
+        STARTED,
+        STARTED_FROM_TILE,
+        STOPPED,
+        FAILED_TO_START,
     }
 
     private var username: String? = null
@@ -90,7 +95,11 @@ class FtpService : Service(), Runnable {
     private var isStartedByTile = false
     private lateinit var wakeLock: PowerManager.WakeLock
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(
+        intent: Intent?,
+        flags: Int,
+        startId: Int,
+    ): Int {
         isStartedByTile = true == intent?.getBooleanExtra(TAG_STARTED_BY_TILE, false)
         var attempts = 10
         while (serverThread != null) {
@@ -107,7 +116,16 @@ class FtpService : Service(), Runnable {
 
         serverThread = thread(block = this::run)
         val notification = FtpNotification.startNotification(applicationContext, isStartedByTile)
-        startForeground(NotificationConstants.FTP_ID, notification)
+        if (SDK_INT >= Q) {
+            ServiceCompat.startForeground(
+                this,
+                NotificationConstants.FTP_ID,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC,
+            )
+        } else {
+            startForeground(NotificationConstants.FTP_ID, notification)
+        }
         return START_NOT_STICKY
     }
 
@@ -140,17 +158,19 @@ class FtpService : Service(), Runnable {
 
             commandFactory = CommandFactoryFactory.create(shouldUseAndroidFileSystem)
 
-            val usernamePreference = preferences.getString(
-                KEY_PREFERENCE_USERNAME,
-                DEFAULT_USERNAME
-            )
+            val usernamePreference =
+                preferences.getString(
+                    KEY_PREFERENCE_USERNAME,
+                    DEFAULT_USERNAME,
+                )
             if (usernamePreference != DEFAULT_USERNAME) {
                 username = usernamePreference
                 runCatching {
-                    password = PasswordUtil.decryptPassword(
-                        applicationContext,
-                        preferences.getString(KEY_PREFERENCE_PASSWORD, "")!!
-                    )
+                    password =
+                        PasswordUtil.decryptPassword(
+                            applicationContext,
+                            preferences.getString(KEY_PREFERENCE_PASSWORD, "")!!,
+                        )
                     isPasswordProtected = true
                 }.onFailure {
                     log.warn("failed to decrypt password in ftp service", it)
@@ -167,10 +187,11 @@ class FtpService : Service(), Runnable {
                 user.name = username
                 user.password = password
             }
-            user.homeDirectory = preferences.getString(
-                KEY_PREFERENCE_PATH,
-                defaultPath(this@FtpService)
-            )
+            user.homeDirectory =
+                preferences.getString(
+                    KEY_PREFERENCE_PATH,
+                    defaultPath(this@FtpService),
+                )
             if (!preferences.getBoolean(KEY_PREFERENCE_READONLY, false)) {
                 user.authorities = listOf(WritePermission())
             }
@@ -184,20 +205,23 @@ class FtpService : Service(), Runnable {
                     val keyStore = KeyStore.getInstance("BKS")
                     val keyStorePassword = BuildConfig.FTP_SERVER_KEYSTORE_PASSWORD.toCharArray()
                     keyStore.load(resources.openRawResource(R.raw.key), keyStorePassword)
-                    val keyManagerFactory = KeyManagerFactory
-                        .getInstance(KeyManagerFactory.getDefaultAlgorithm())
+                    val keyManagerFactory =
+                        KeyManagerFactory
+                            .getInstance(KeyManagerFactory.getDefaultAlgorithm())
                     keyManagerFactory.init(keyStore, keyStorePassword)
-                    val trustManagerFactory = TrustManagerFactory
-                        .getInstance(TrustManagerFactory.getDefaultAlgorithm())
+                    val trustManagerFactory =
+                        TrustManagerFactory
+                            .getInstance(TrustManagerFactory.getDefaultAlgorithm())
                     trustManagerFactory.init(keyStore)
-                    fac.sslConfiguration = DefaultSslConfiguration(
-                        keyManagerFactory,
-                        trustManagerFactory,
-                        ClientAuth.WANT,
-                        "TLS",
-                        enabledCipherSuites,
-                        "ftpserver"
-                    )
+                    fac.sslConfiguration =
+                        DefaultSslConfiguration(
+                            keyManagerFactory,
+                            trustManagerFactory,
+                            ClientAuth.WANT,
+                            "TLS",
+                            enabledCipherSuites,
+                            "ftpserver",
+                        )
                     fac.isImplicitSsl = true
                 } catch (e: GeneralSecurityException) {
                     preferences.edit().putBoolean(KEY_PREFERENCE_SECURE, false).apply()
@@ -210,17 +234,18 @@ class FtpService : Service(), Runnable {
 
             addListener("default", fac.createListener())
             runCatching {
-                server = createServer().apply {
-                    start()
-                    EventBus.getDefault()
-                        .post(
-                            if (isStartedByTile) {
-                                FtpReceiverActions.STARTED_FROM_TILE
-                            } else {
-                                FtpReceiverActions.STARTED
-                            }
-                        )
-                }
+                server =
+                    createServer().apply {
+                        start()
+                        EventBus.getDefault()
+                            .post(
+                                if (isStartedByTile) {
+                                    FtpReceiverActions.STARTED_FROM_TILE
+                                } else {
+                                    FtpReceiverActions.STARTED
+                                },
+                            )
+                    }
             }.onFailure {
                 EventBus.getDefault().post(FtpReceiverActions.FAILED_TO_START)
             }
@@ -248,12 +273,13 @@ class FtpService : Service(), Runnable {
         super.onTaskRemoved(rootIntent)
         val restartService = Intent(applicationContext, this.javaClass).setPackage(packageName)
         val flag = getPendingIntentFlag(FLAG_ONE_SHOT)
-        val restartServicePI = PendingIntent.getService(
-            applicationContext,
-            1,
-            restartService,
-            flag
-        )
+        val restartServicePI =
+            PendingIntent.getService(
+                applicationContext,
+                1,
+                restartService,
+                flag,
+            )
         val alarmService = applicationContext.getSystemService(ALARM_SERVICE) as AlarmManager
         alarmService[AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 2000] =
             restartServicePI
@@ -289,33 +315,34 @@ class FtpService : Service(), Runnable {
         private lateinit var _enabledCipherSuites: Array<String>
 
         init {
-            _enabledCipherSuites = LinkedList<String>().apply {
-                if (SDK_INT >= Q) {
-                    add("TLS_AES_128_GCM_SHA256")
-                    add("TLS_AES_256_GCM_SHA384")
-                    add("TLS_CHACHA20_POLY1305_SHA256")
-                }
-                if (SDK_INT >= N) {
-                    add("TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256")
-                    add("TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256")
-                }
-                if (SDK_INT >= LOLLIPOP) {
-                    add("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA")
-                    add("TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256")
-                    add("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA")
-                    add("TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384")
-                    add("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA")
-                    add("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256")
-                    add("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA")
-                    add("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384")
-                    add("TLS_RSA_WITH_AES_128_GCM_SHA256")
-                    add("TLS_RSA_WITH_AES_256_GCM_SHA384")
-                }
-                if (SDK_INT < LOLLIPOP) {
-                    add("TLS_RSA_WITH_AES_128_CBC_SHA")
-                    add("TLS_RSA_WITH_AES_256_CBC_SHA")
-                }
-            }.toTypedArray()
+            _enabledCipherSuites =
+                LinkedList<String>().apply {
+                    if (SDK_INT >= Q) {
+                        add("TLS_AES_128_GCM_SHA256")
+                        add("TLS_AES_256_GCM_SHA384")
+                        add("TLS_CHACHA20_POLY1305_SHA256")
+                    }
+                    if (SDK_INT >= N) {
+                        add("TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256")
+                        add("TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256")
+                    }
+                    if (SDK_INT >= LOLLIPOP) {
+                        add("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA")
+                        add("TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256")
+                        add("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA")
+                        add("TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384")
+                        add("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA")
+                        add("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256")
+                        add("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA")
+                        add("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384")
+                        add("TLS_RSA_WITH_AES_128_GCM_SHA256")
+                        add("TLS_RSA_WITH_AES_256_GCM_SHA384")
+                    }
+                    if (SDK_INT < LOLLIPOP) {
+                        add("TLS_RSA_WITH_AES_128_CBC_SHA")
+                        add("TLS_RSA_WITH_AES_256_CBC_SHA")
+                    }
+                }.toTypedArray()
         }
 
         /**
@@ -342,11 +369,11 @@ class FtpService : Service(), Runnable {
         @JvmStatic
         fun defaultPath(context: Context): String {
             return if (PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(KEY_PREFERENCE_SAF_FILESYSTEM, false) && SDK_INT > M
+                    .getBoolean(KEY_PREFERENCE_SAF_FILESYSTEM, false) && SDK_INT > M
             ) {
                 DocumentsContract.buildTreeDocumentUri(
                     "com.android.externalstorage.documents",
-                    "primary:"
+                    "primary:",
                 ).toString()
             } else {
                 Environment.getExternalStorageDirectory().absolutePath

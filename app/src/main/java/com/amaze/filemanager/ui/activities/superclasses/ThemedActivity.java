@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
+ * Copyright (C) 2014-2024 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
  * Emmanuel Messulam<emmanuelbendavid@gmail.com>, Raymond Lai <airwave209gt at gmail.com> and Contributors.
  *
  * This file is part of Amaze File Manager.
@@ -31,6 +31,7 @@ import com.amaze.filemanager.ui.dialogs.ColorPickerDialog;
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants;
 import com.amaze.filemanager.ui.theme.AppTheme;
 import com.amaze.filemanager.ui.theme.AppThemePreference;
+import com.amaze.filemanager.utils.ContextCompatExtKt;
 import com.amaze.filemanager.utils.PreferenceUtils;
 import com.amaze.filemanager.utils.Utils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -356,8 +357,11 @@ public class ThemedActivity extends PreferenceActivity {
    */
   private void registerPowerModeReceiver() {
     if (SDK_INT >= LOLLIPOP) {
-      registerReceiver(
-          powerModeReceiver, new IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED));
+      ContextCompatExtKt.registerReceiverCompat(
+          this,
+          powerModeReceiver,
+          new IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED),
+          ContextCompat.RECEIVER_EXPORTED);
     }
   }
 

@@ -24,7 +24,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.KITKAT
 import android.os.Build.VERSION_CODES.N
 import android.os.Build.VERSION_CODES.P
 import android.os.storage.StorageManager
@@ -65,11 +64,10 @@ import java.util.concurrent.TimeUnit
 @SuppressLint("SdCardPath")
 @RunWith(AndroidJUnit4::class)
 @Config(
-    sdk = [KITKAT, P],
-    shadows = [ShadowPackageManager::class, ShadowMultiDex::class, ShadowTabHandler::class]
+    sdk = [P],
+    shadows = [ShadowPackageManager::class, ShadowMultiDex::class, ShadowTabHandler::class],
 )
 class PackageInstallValidationTest {
-
     companion object {
         private const val GOOD_PACKAGE = "/sdcard/good-package.apk"
         private const val MY_PACKAGE = "/sdcard/my-package.apk"
@@ -86,17 +84,17 @@ class PackageInstallValidationTest {
             GOOD_PACKAGE,
             PackageInfo().also {
                 it.packageName = "foo.bar.abc"
-            }
+            },
         )
         packageManager.setPackageArchiveInfo(
             MY_PACKAGE,
             PackageInfo().also {
                 it.packageName = AppConfig.getInstance().packageName
-            }
+            },
         )
         packageManager.setPackageArchiveInfo(
             INVALID_PACKAGE,
-            null
+            null,
         )
         if (SDK_INT >= N) initializeInternalStorage()
         RxJavaPlugins.reset()
@@ -115,11 +113,13 @@ class PackageInstallValidationTest {
      */
     @After
     fun tearDown() {
-        if (SDK_INT >= N) shadowOf(
-            ApplicationProvider.getApplicationContext<Context>().getSystemService(
-                StorageManager::class.java
-            )
-        ).resetStorageVolumeList()
+        if (SDK_INT >= N) {
+            shadowOf(
+                ApplicationProvider.getApplicationContext<Context>().getSystemService(
+                    StorageManager::class.java,
+                ),
+            ).resetStorageVolumeList()
+        }
     }
 
     /**
@@ -128,7 +128,7 @@ class PackageInstallValidationTest {
     @Test
     fun testGoodPackage() {
         PackageInstallValidation.validatePackageInstallability(
-            File(GOOD_PACKAGE)
+            File(GOOD_PACKAGE),
         )
         assertEquals(2, 1 + 1)
     }
@@ -139,7 +139,7 @@ class PackageInstallValidationTest {
     @Test(expected = PackageInstallValidation.PackageCannotBeInstalledException::class)
     fun testMyPackage() {
         PackageInstallValidation.validatePackageInstallability(
-            File(MY_PACKAGE)
+            File(MY_PACKAGE),
         )
         fail("PackageCannotBeInstalledException not thrown")
     }
@@ -150,7 +150,7 @@ class PackageInstallValidationTest {
     @Test(expected = IllegalStateException::class)
     fun testInvalidPackage() {
         PackageInstallValidation.validatePackageInstallability(
-            File(INVALID_PACKAGE)
+            File(INVALID_PACKAGE),
         )
         fail("PackageCannotBeInstalledException not thrown")
     }
@@ -192,7 +192,7 @@ class PackageInstallValidationTest {
             }
             assertEquals(
                 activity.getString(R.string.error_google_play_cannot_update_myself),
-                ShadowToast.getTextOfLatestToast()
+                ShadowToast.getTextOfLatestToast(),
             )
         }.also {
             scenario.moveToState(Lifecycle.State.DESTROYED)
@@ -216,7 +216,7 @@ class PackageInstallValidationTest {
             }
             assertEquals(
                 activity.getString(R.string.error_cannot_get_package_info, INVALID_PACKAGE),
-                ShadowToast.getTextOfLatestToast()
+                ShadowToast.getTextOfLatestToast(),
             )
         }.also {
             scenario.moveToState(Lifecycle.State.DESTROYED)

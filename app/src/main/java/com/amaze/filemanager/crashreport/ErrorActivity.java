@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
+ * Copyright (C) 2014-2024 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
  * Emmanuel Messulam<emmanuelbendavid@gmail.com>, Raymond Lai <airwave209gt at gmail.com> and Contributors.
  *
  * This file is part of Amaze File Manager.
@@ -263,20 +263,14 @@ public class ErrorActivity extends ThemedActivity {
 
   @Override
   public boolean onOptionsItemSelected(final MenuItem item) {
-    final int id = item.getItemId();
-    switch (id) {
-      case android.R.id.home:
-        goToReturnActivity();
-        break;
-      case R.id.menu_item_share_error:
-        final Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, buildMarkdown());
-        intent.setType("text/plain");
-        startActivity(Intent.createChooser(intent, getString(R.string.share)));
-        break;
-      default:
-        break;
+    if (item.getItemId() == android.R.id.home) {
+      goToReturnActivity();
+    } else if (item.getItemId() == R.id.menu_item_share_error) {
+      final Intent intent = new Intent();
+      intent.setAction(Intent.ACTION_SEND);
+      intent.putExtra(Intent.EXTRA_TEXT, buildMarkdown());
+      intent.setType("text/plain");
+      startActivity(Intent.createChooser(intent, getString(R.string.share)));
     }
     return false;
   }

@@ -34,21 +34,30 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
 import com.amaze.filemanager.R
 import com.amaze.filemanager.ui.activities.PreferencesActivity
 import com.amaze.filemanager.ui.fragments.preferencefragments.BackupPrefsFragment
-import com.google.gson.*
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import org.junit.Assert
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
 
 @RunWith(AndroidJUnit4::class)
 class BackupPrefsFragmentTest {
-
     var storagePath = "/storage/emulated/0"
     var fileName = "amaze_backup.json"
+
+    @Rule
+    @JvmField
+    val storagePermissionRule: GrantPermissionRule =
+        GrantPermissionRule
+            .grant(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     /** Test exporting */
     @Test
@@ -63,7 +72,7 @@ class BackupPrefsFragmentTest {
             File(
                 storagePath +
                     File.separator +
-                    fileName
+                    fileName,
             )
 
         exportFile.delete() // delete if already exists
@@ -80,7 +89,7 @@ class BackupPrefsFragmentTest {
             File(
                 ApplicationProvider.getApplicationContext<Context>().cacheDir.absolutePath +
                     File.separator +
-                    fileName
+                    fileName,
             )
 
         Assert.assertTrue(tempFile.exists())
@@ -108,7 +117,7 @@ class BackupPrefsFragmentTest {
             File(
                 storagePath +
                     File.separator +
-                    fileName
+                    fileName,
             )
 
         activityScenario.onActivity { preferencesActivity ->
@@ -116,26 +125,29 @@ class BackupPrefsFragmentTest {
                 .add(backupPrefsFragment, null)
                 .commitNow()
 
-            val preferences = PreferenceManager
-                .getDefaultSharedPreferences(preferencesActivity)
+            val preferences =
+                PreferenceManager
+                    .getDefaultSharedPreferences(preferencesActivity)
 
             val preferenceMap: Map<String?, *> = preferences.all
 
-            val inputString = file
-                .inputStream()
-                .bufferedReader()
-                .use {
-                    it.readText()
-                }
+            val inputString =
+                file
+                    .inputStream()
+                    .bufferedReader()
+                    .use {
+                        it.readText()
+                    }
 
             val type = object : TypeToken<Map<String?, *>>() {}.type
 
-            val importMap: Map<String?, *> = GsonBuilder()
-                .create()
-                .fromJson(
-                    inputString,
-                    type
-                )
+            val importMap: Map<String?, *> =
+                GsonBuilder()
+                    .create()
+                    .fromJson(
+                        inputString,
+                        type,
+                    )
 
             for ((key, value) in preferenceMap) {
                 var mapValue = importMap[key]
@@ -144,7 +156,7 @@ class BackupPrefsFragmentTest {
                     mapValue = (mapValue as Double).toInt() // since Gson parses Integer as Double
                 }
 
-                Assert.assertEquals(value, mapValue)
+                assertEquals("Difference found at key $key", value, mapValue)
             }
         }
     }
@@ -162,7 +174,7 @@ class BackupPrefsFragmentTest {
             File(
                 storagePath +
                     File.separator +
-                    fileName
+                    fileName,
             )
 
         exportFile.delete() // delete if already exists
@@ -178,33 +190,36 @@ class BackupPrefsFragmentTest {
                 BackupPrefsFragment.IMPORT_BACKUP_FILE,
                 Activity.RESULT_OK,
                 Intent().setData(
-                    Uri.fromFile(exportFile)
-                )
+                    Uri.fromFile(exportFile),
+                ),
             )
 
-            val inputString = exportFile
-                .inputStream()
-                .bufferedReader()
-                .use {
-                    it.readText()
-                }
+            val inputString =
+                exportFile
+                    .inputStream()
+                    .bufferedReader()
+                    .use {
+                        it.readText()
+                    }
 
             val type = object : TypeToken<Map<String?, *>>() {}.type
 
-            val importMap: Map<String?, *> = GsonBuilder()
-                .create()
-                .fromJson(
-                    inputString,
-                    type
-                )
+            val importMap: Map<String?, *> =
+                GsonBuilder()
+                    .create()
+                    .fromJson(
+                        inputString,
+                        type,
+                    )
 
-            val preferences = PreferenceManager
-                .getDefaultSharedPreferences(preferencesActivity)
+            val preferences =
+                PreferenceManager
+                    .getDefaultSharedPreferences(preferencesActivity)
 
             val preferenceMap: Map<String?, *> = preferences.all
 
             for ((key, value) in preferenceMap) {
-                Assert.assertTrue(checkPrefEqual(preferences, importMap, key, value))
+                assertTrue("checkPrefEqual($key) failed", checkPrefEqual(preferences, importMap, key, value))
             }
         }
     }
@@ -213,13 +228,14 @@ class BackupPrefsFragmentTest {
         preferences: SharedPreferences,
         importMap: Map<String?, *>,
         key: String?,
-        value: Any?
+        value: Any?,
     ): Boolean {
         when (value!!::class.simpleName) {
             "Boolean" -> return importMap[key] as Boolean ==
                 preferences.getBoolean(key, false)
-            "Float" -> importMap[key] as Float ==
-                preferences.getFloat(key, 0f)
+            "Float" ->
+                importMap[key] as Float ==
+                    preferences.getFloat(key, 0f)
             "Int" -> {
                 // since Gson parses Integer as Double
                 val toInt = (importMap[key] as Double).toInt()

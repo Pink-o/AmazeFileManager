@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
+ * Copyright (C) 2014-2024 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
  * Emmanuel Messulam<emmanuelbendavid@gmail.com>, Raymond Lai <airwave209gt at gmail.com> and Contributors.
  *
  * This file is part of Amaze File Manager.
@@ -48,6 +48,7 @@ import com.amaze.filemanager.filesystem.root.CopyFilesCommand;
 import com.amaze.filemanager.filesystem.root.MoveFileCommand;
 import com.amaze.filemanager.ui.activities.MainActivity;
 import com.amaze.filemanager.ui.notifications.NotificationConstants;
+import com.amaze.filemanager.utils.ContextCompatExtKt;
 import com.amaze.filemanager.utils.DatapointParcelable;
 import com.amaze.filemanager.utils.ObtainableServiceBinder;
 import com.amaze.filemanager.utils.ProgressHandler;
@@ -67,6 +68,7 @@ import android.widget.Toast;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 public class CopyService extends AbstractProgressiveService {
@@ -96,7 +98,11 @@ public class CopyService extends AbstractProgressiveService {
   public void onCreate() {
     super.onCreate();
     c = getApplicationContext();
-    registerReceiver(receiver3, new IntentFilter(TAG_BROADCAST_COPY_CANCEL));
+    ContextCompatExtKt.registerReceiverCompat(
+        this,
+        cancelReceiver,
+        new IntentFilter(TAG_BROADCAST_COPY_CANCEL),
+        ContextCompat.RECEIVER_NOT_EXPORTED);
   }
 
   @Override
@@ -226,7 +232,7 @@ public class CopyService extends AbstractProgressiveService {
 
   public void onDestroy() {
     super.onDestroy();
-    unregisterReceiver(receiver3);
+    unregisterReceiver(cancelReceiver);
   }
 
   private class DoInBackground extends AsyncTask<Bundle, Void, Void> {
@@ -501,6 +507,7 @@ public class CopyService extends AbstractProgressiveService {
                         file.isDirectory());
                 try {
                   copyFiles(file, destFile, progressHandler);
+                  destFile.setLastModified(file.lastModified());
                 } catch (IOException e) {
                   throw new IllegalStateException(e); // throw unchecked exception, no throws needed
                 }
@@ -522,12 +529,13 @@ public class CopyService extends AbstractProgressiveService {
                 AppConfig.toast(c, c.getString(R.string.copy_low_memory));
               },
               ServiceWatcherUtil.UPDATE_POSITION);
+          targetFile.setLastModified(sourceFile.lastModified());
         }
       }
     }
   }
 
-  private final BroadcastReceiver receiver3 =
+  private final BroadcastReceiver cancelReceiver =
       new BroadcastReceiver() {
 
         @Override
