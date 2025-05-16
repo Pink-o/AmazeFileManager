@@ -851,5 +851,6 @@ You only need to do this once, until the next time you select a new location for
     <string name="trash_bin_retention_bytes_summary">Maximum data (in MBs) trash bin can store</string>
     <string name="trash_bin_cleanup_interval_title">Cleanup interval</string>
     <string name="trash_bin_cleanup_interval_summary">Trigger auto-cleanup interval (hours)</string>
+    <string name="file_deletion">File Deletion</string>
 </resources>
 
