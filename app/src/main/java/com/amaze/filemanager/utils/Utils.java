@@ -230,6 +230,10 @@ public class Utils {
 
   /** Sanitizes input from external application to avoid any attempt of command injection */
   public static String sanitizeInput(String input) {
+    if (input == null || input.isEmpty()) {
+      return input;
+    }
+
     // iterate through input and keep sanitizing until it's fully injection proof
     String sanitizedInput;
     String sanitizedInputTemp = input;
