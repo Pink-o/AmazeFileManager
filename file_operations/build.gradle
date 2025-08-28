@@ -8,6 +8,7 @@ android {
 
     defaultConfig {
         minSdkVersion libs.versions.minSdk.get().toInteger()
+        ndkVersion libs.versions.ndk.get()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
