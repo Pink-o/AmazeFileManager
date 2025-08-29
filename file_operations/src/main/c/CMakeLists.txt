@@ -10,3 +10,4 @@ add_library(rootoperations SHARED rootoperations.c)
 find_library(log-lib log)
 
 target_link_libraries(rootoperations ${log-lib})
+target_link_options(${CMAKE_PROJECT_NAME} PRIVATE "-Wl,-z,max-page-size=16384")
