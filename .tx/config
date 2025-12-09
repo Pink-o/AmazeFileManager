@@ -20,4 +20,4 @@ file_filter = app/src/main/res/values-<lang>/strings.xml
 source_file = app/src/main/res/values/strings.xml
 source_lang = en_US
 type        = ANDROID
-lang_map    = ast_ES: ast-rES, bqi: bqi-rLU, fa_IR: fa-rIR, hi_IN: hi-rIN, hu: hu-rHU, it_IT: it-rIT, ko_KR: ko-rKR, my_MM: my-rMM, pt_BR: pt-rBR, pt_PT: pt-rPT, sv_SE: sv, tr_TR: tr-rTR, zh-Hans: zh-rHN, zh_CN: zh-rCN, zh_HK: zh-rHK, zh_TW: zh-rTW
+lang_map    = ast_ES: ast-rES, fa_IR: fa-rIR, hi_IN: hi-rIN, hu: hu-rHU, it_IT: it-rIT, ko_KR: ko-rKR, my_MM: my-rMM, pt_BR: pt-rBR, pt_PT: pt-rPT, sv_SE: sv, tr_TR: tr-rTR, zh-Hans: zh-rHN, zh_CN: zh-rCN, zh_HK: zh-rHK, zh_TW: zh-rTW
