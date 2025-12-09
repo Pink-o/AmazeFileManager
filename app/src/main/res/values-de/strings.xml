@@ -327,50 +327,6 @@ andernfalls wird nach Treffern gesucht.</string>
     <string name="use_custom_ip">Benutzerdefinierte IP verwenden</string>
     <string name="bookmark_lost">Lesezeichen nicht gefunden, erstelle erneut&#8230;</string>
 
-    <string name="smb_instructions">
-        <html>
-            <body>
-                <h1>Wie man in Android auf freigegebene Windows-Ordner zugreift (SMB)</h1>\n\n
-                <ul>
-                    <li>
-                        <b>Dateifreigabe in Windows aktivieren</b>\n
-                    </li>
-                    <p style='margin-left: 40px'>
-                        Öffnen Sie die Systemsteuerung, wählen Sie unter »Netzwerk und Internet« das »Netzwerk- und Freigabecenter«, 
-                      klicken Sie dort auf »Erweiterte Freigabeeinstellungen ändern« und aktivieren die Datei- und Druckerfreigabe.\n\n
-                    </p>
-
-                    <li>
-                        <b>Zusätzliche Dateifreigabe-Einstellungen</b>\n
-                    </li>
-                    <p style='margin-left: 40px'>
-                        Wenn Sie möchten, können Sie hier noch andere erweiterte Freigabe-Einstellungen konfigurieren. \n
-                       Beispielsweise könnten Sie den Zugriff auf Ihre Dateien ohne ein Passwort aktivieren, wenn Sie allen Geräten in Ihrem lokalen Netzwerk vertrauen. Sobald die Datei- und Druckerfreigabe aktiviert ist, können Sie Datei-Explorer oder Windows Explorer öffnen, auf einen Ordner, den Sie freigeben möchten, rechtsklicken und »Eigenschaften« wählen. \n
-                        Klicken Sie auf die Freigabe-Taste auf dem Tab »Freigabe« und machen Sie den Ordner im Netzwerk zugänglich.\n\n
-                        </p>
-
-                    <li>
-                        <b>Sicherstellen, dass beide Geräte im selben WLAN sind</b>\n
-                    </li>
-                    <p style='margin-left: 40px'>
-                        Diese Funktion macht Dateien im lokalen Netzwerk zugänglich, somit müssen sich Ihr PC und mobile Geräte
-                        im selben lokalen Netzwerk befinden. Sie können auf einen freigegebenen Windows-Ordner nicht über das Internet zugreifen oder wenn Ihr Smartphone über mobile Daten verbunden ist – es muss mit dem WLAN verbunden sein.\n\n
-                    </p>
-
-                    <li>
-                        <b>IP-Adresse finden</b>\n
-                    </li>
-                    <p style='margin-left: 40px'>
-                        Öffnen Sie die Eingabeaufforderung. Geben Sie »ipconfig« ein und drücken Sie die Eingabetaste. Suchen Sie bei Standardgateway unter Netzwerkadapter nach der IP-Adresse Ihres Routers. Suchen Sie unter 
-                        \\"IPv4-Adresse\\" im selben Abschnitt nach der IP-Adresse Ihres Computers.
-\n\n
-                    </p>
-
-                    <b>Tragen Sie die Werte ins SMB-Dialogfeld ein</b>\n
-                </ul>
-            </body>
-        </html>
-    </string>
     <string name="share_limit">Es können nicht mehr als 100 Dateien geteilt werden</string>
     <string name="otg_access">Stammverzeichnis des OTG-Geräts wählen</string>
     <string name="information">Informationen</string>

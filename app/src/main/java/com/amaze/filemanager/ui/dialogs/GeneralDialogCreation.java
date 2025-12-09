@@ -21,6 +21,7 @@
 package com.amaze.filemanager.ui.dialogs;
 
 import static android.os.Build.VERSION.SDK_INT;
+import static androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT;
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_SORTBY_ONLY_THIS;
 
 import java.io.File;
@@ -92,6 +93,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.text.InputType;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.view.LayoutInflater;
@@ -107,6 +109,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.text.HtmlCompat;
 import androidx.core.text.TextUtilsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.preference.PreferenceManager;
@@ -1030,8 +1033,11 @@ public class GeneralDialogCreation {
   }
 
   public static void showSMBHelpDialog(Context m, int accentColor) {
+    final @NonNull Spanned text =
+        HtmlCompat.fromHtml(m.getString(R.string.smb_instructions), FROM_HTML_MODE_COMPACT);
+
     MaterialDialog.Builder b = new MaterialDialog.Builder(m);
-    b.content(m.getText(R.string.smb_instructions));
+    b.content(text);
     b.positiveText(R.string.doit);
     b.positiveColor(accentColor);
     b.build().show();

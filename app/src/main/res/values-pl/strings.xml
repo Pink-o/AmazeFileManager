@@ -321,48 +321,6 @@
     <string name="use_custom_ip">Własne IP</string>
     <string name="bookmark_lost">Nie odnaleziono zakładki, ponowne tworzenie&#8230;</string>
 
-    <string name="smb_instructions">
-        <html>
-            <body>
-                <h1>Jak uzyskać dostęp na Androidzie do folderu udostępnionego w Windows</h1>\n\n
-                <ul>
-                    <li>
-                        <b>Włącz \"Udostępnianie plików\"</b>\n
-                    </li>
-                    <p style="margin-left: 40px">
-                        Otwórz Panel sterowania, kliknij \"Wybierz grupę domową\" i opcje udostępniania przez Internet, a potem kliknij \"Zmień zaawansowane opcje udostępniania. Włącz plik i uruchom funkcję udostępniania drukarki.\n\n
-                    </p>
-
-                    <li>
-                        <b>Dodatkowe ustawienia udostępnianych plików</b>\n
-                    </li>
-                    <p style="margin-left: 40px">
-                        Możesz tutaj skonfigurować również inne zaawansowane opcje udostępniania. \n Na przykład możesz zezwolić na dostęp do twoich plików bez podawania hasła, jeżeli rozpoznajesz wszystkie urządzenia w sieci lokalnej. Gdy udostępnianie plików i drukarek jest włączone, otwórz Eksplorator plików lub Eksplorator Windows, kliknij prawym przyciskiem myszy na folder, który chcesz udostępnić, i wybierz \"Właściwości\". \n
-                        Kliknij przycisk \"Udostępnij\", aby folder był dostępny w sieci.\n\n
-                        </p>
-
-                    <li>
-                        <b>Upewnij się, że oba urządzenia są w tej samej sieci Wi-Fi</b>\n
-                    </li>
-                    <p style="margin-left: 40px">
-                        Dzięki temu pliki staną się dostępne w sieci lokalnej; twój komputer i urządzenie mobilne muszą pracować w tej samej sieci lokalnej. Nie możesz uzyskać dostępu do folderu Windows udostępnionego przez Internet albo gdy twój smartfon korzysta z niego za pośrednictwem łączności mobilnej. Musisz być połączony przez Wi-Fi.\n\n
-                    </p>
-
-                    <li>
-                        <b>Znajdź adres IP</b>\n
-                    </li>
-                    <p style="margin-left: 40px">
-                        Otwórz okno Wiersza poleceń. Wpisz \"ipconfig\" i naciśnij Enter. Sprawdź domyślną bramkę zgodną z twoją kartą sieciową dla adresu IP rutera. Szukaj \"Adres IPv4\" w tej samej sekcji karty, aby znaleźć adres IP komputera.\n\n
-                    </p>
-
-                    <b>Wpisz szczegóły w oknie dialogowym</b>\n
-                </ul>
-            </body>
-        </html>
-    
- 
-smb_instructions
-</string>
     <string name="share_limit">Nie możesz udostępnić więcej niż 100 plików</string>
     <string name="otg_access">Wybierz katalog główny urządzenia OTG</string>
     <string name="information">Informacja</string>
