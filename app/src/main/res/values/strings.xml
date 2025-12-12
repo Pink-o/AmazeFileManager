@@ -659,8 +659,8 @@
     <string name="encrypt_option_use_aze">Use Amaze Encryption Format</string>
     <string name="encrypt_option_use_aescrypt_desc"><![CDATA[
         <p>AESCrypt is an open source file encryption format based on AES encryption. It is also portable, can be decrypted with AESCrypt programs on other platforms.</p>
-        <p><a href=&quot;https://www.aescrypt.com&quot; target=_blank>AESCrypt website</a></p>]]>
-    </string>
+        <p>AESCrypt website: https://www.aescrypt.com</p>
+    ]]></string>
     <string name="encrypt_option_use_azecrypt_desc"><![CDATA[
         <p>Amaze&apos;s Encryption Format is also based on AES encryption; but different from AESCrypt format, it can only be decrypted by this device; also you must not uninstall Amaze File Manager from this device nor change the way you lock screen, otherwise you will have no way to recover the encrypted file.</p>
     ]]></string>
