@@ -341,10 +341,10 @@
                         <b>Enable File Sharing on Windows</b>
                         <br/>
                     </li>
-                    <p style="margin-left: 40px">
+                    <p style=&quot;margin-left: 40px&quot;>
                         Open the Control Panel, click Choose HomeGroup and Sharing options under Network
-                        and Internet, and click \"Change Advanced Sharing Settings\", enable the \"File and
-                        Printer Sharing\" feature.
+                        and Internet, and click &quot;Change Advanced Sharing Settings&quot;, enable the &quot;File and
+                        Printer Sharing&quot; feature.
                         <br/>
                         <br/>
                     </p>
@@ -353,7 +353,7 @@
                         <b>Additional File Sharing settings</b>
                         <br/>
                     </li>
-                    <p style="margin-left: 40px">
+                    <p style=&quot;margin-left: 40px&quot;>
                         You may also want to configure the other advanced sharing settings here.
                         <br/>
                         For example, you could enable access to your files without a password if you trust all
@@ -370,7 +370,7 @@
                         <b>Make sure both devices are on same Wifi</b>
                         <br/>
                     </li>
-                    <p style="margin-left: 40px">
+                    <p style=&quot;margin-left: 40px&quot;>
                         This feature makes files available on the local network, so your PC and mobile devices
                         have to be on the same local network. You can\’t access a shared Windows folder
                         over the Internet or when your smartphone is connected to its mobile data — it
@@ -383,10 +383,10 @@
                         <b>Find IP Address</b>
                         <br/>
                     </li>
-                    <p style="margin-left: 40px">
-                        Open Command Prompt. Type \"ipconfig\" and press Enter. Look for Default Gateway
-                        under your network adapter for your router\'s IP address. Look for
-                        \"IPv4 Address\" under the same adapter section to find your computer\'s IP
+                    <p style=&quot;margin-left: 40px&quot;>
+                        Open Command Prompt. Type &quot;ipconfig&quot; and press Enter. Look for Default Gateway
+                        under your network adapter for your router&apos;s IP address. Look for
+                        &quot;IPv4 Address&quot; under the same adapter section to find your computer&apos;s IP
                         address.
                         <br/>
                         <br/>
