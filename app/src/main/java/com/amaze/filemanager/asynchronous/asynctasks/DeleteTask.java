@@ -130,10 +130,11 @@ public class DeleteTask
   @Override
   public void onPostExecute(AsyncTaskResult<Boolean> result) {
 
-    Intent intent = new Intent(MainActivity.KEY_INTENT_LOAD_LIST);
     if (files.size() > 0) {
       String path = files.get(0).getParent(applicationContext);
+      Intent intent = new Intent(MainActivity.KEY_INTENT_LOAD_LIST);
       intent.putExtra(MainActivity.KEY_INTENT_LOAD_LIST_FILE, path);
+      intent.setPackage(applicationContext.getPackageName());
       applicationContext.sendBroadcast(intent);
     }
 

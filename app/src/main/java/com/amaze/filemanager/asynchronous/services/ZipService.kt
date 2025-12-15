@@ -259,6 +259,7 @@ class ZipService : AbstractProgressiveService() {
                         val intent =
                             Intent(MainActivity.KEY_INTENT_LOAD_LIST)
                                 .putExtra(MainActivity.KEY_INTENT_LOAD_LIST_FILE, zipPath)
+                                .setPackage(applicationContext.packageName)
                         zipService.sendBroadcast(intent)
                         zipService.stopSelf()
                     },

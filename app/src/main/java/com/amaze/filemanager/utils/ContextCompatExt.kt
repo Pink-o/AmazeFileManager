@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Build.VERSION_CODES.O
+import androidx.core.content.ContextCompat
 
 /**
  * Context.registerReceiver() for SDK compatibility.
@@ -17,7 +18,7 @@ import android.os.Build.VERSION_CODES.O
 fun Context.registerReceiverCompat(
     broadcastReceiver: BroadcastReceiver,
     intentFilter: IntentFilter,
-    flag: Int = 0x4,
+    flag: Int = ContextCompat.RECEIVER_NOT_EXPORTED,
 ) {
     if (Build.VERSION.SDK_INT >= O) {
         this.registerReceiver(broadcastReceiver, intentFilter, flag)

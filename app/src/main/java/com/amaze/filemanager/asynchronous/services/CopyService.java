@@ -297,6 +297,7 @@ public class CopyService extends AbstractProgressiveService {
 
       Intent intent = new Intent(MainActivity.KEY_INTENT_LOAD_LIST);
       intent.putExtra(MainActivity.KEY_INTENT_LOAD_LIST_FILE, targetPath);
+      intent.setPackage(getPackageName());
       sendBroadcast(intent);
       stopSelf();
     }
