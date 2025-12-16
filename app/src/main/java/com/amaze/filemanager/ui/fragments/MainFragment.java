@@ -402,7 +402,7 @@ public class MainFragment extends Fragment
     }
   }
 
-  private BroadcastReceiver receiver2 =
+  private BroadcastReceiver intentLoadListReceiver =
       new BroadcastReceiver() {
 
         @Override
@@ -1246,14 +1246,18 @@ public class MainFragment extends Fragment
   }
 
   @Override
-  public void onResume() {
-    super.onResume();
+  public void onStart() {
+    super.onStart();
     ContextCompatExtKt.registerReceiverCompat(
-        requireMainActivity(),
-        receiver2,
+        requireActivity().getApplicationContext(),
+        intentLoadListReceiver,
         new IntentFilter(MainActivity.KEY_INTENT_LOAD_LIST),
         ContextCompat.RECEIVER_NOT_EXPORTED);
+  }
 
+  @Override
+  public void onResume() {
+    super.onResume();
     resumeDecryptOperations();
     startFileObserver();
   }
@@ -1261,7 +1265,6 @@ public class MainFragment extends Fragment
   @Override
   public void onPause() {
     super.onPause();
-    (requireActivity()).unregisterReceiver(receiver2);
     if (customFileObserver != null) {
       customFileObserver.stopWatching();
     }
@@ -1269,6 +1272,12 @@ public class MainFragment extends Fragment
     if (SDK_INT >= JELLY_BEAN_MR2) {
       (requireActivity()).unregisterReceiver(decryptReceiver);
     }
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    requireActivity().getApplicationContext().unregisterReceiver(intentLoadListReceiver);
   }
 
   public ArrayList<LayoutElementParcelable> addToSmb(

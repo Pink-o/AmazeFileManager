@@ -393,6 +393,7 @@ public class MainActivityHelper {
 
                     intent.putExtra(
                         MainActivity.KEY_INTENT_LOAD_LIST_FILE, hFile.getParent(context));
+                    intent.setPackage(mainActivity.getPackageName());
                     mainActivity.sendBroadcast(intent);
 
                     // update the database entry to reflect rename for encrypted file
