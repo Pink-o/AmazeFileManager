@@ -24,6 +24,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
@@ -95,10 +97,13 @@ object EncryptAuthenticateDialog {
             val useAzeEncrypt: AppCompatCheckBox = vb.checkboxUseAze
             val usageTextInfo: AppCompatTextView =
                 vb.textViewCryptInfo.apply {
+                    movementMethod = LinkMovementMethod.getInstance()
+                    autoLinkMask = Linkify.WEB_URLS
+                    linksClickable = true
                     text =
                         HtmlCompat.fromHtml(
                             main.getString(R.string.encrypt_option_use_aescrypt_desc),
-                            FROM_HTML_MODE_COMPACT,
+                            HtmlCompat.FROM_HTML_MODE_COMPACT,
                         )
                 }
             useAzeEncrypt.setOnCheckedChangeListener(
@@ -242,6 +247,9 @@ object EncryptAuthenticateDialog {
                 AESCRYPT_EXTENSION
             }}",
         )
+        usageTextInfo.movementMethod = LinkMovementMethod.getInstance()
+        usageTextInfo.autoLinkMask = Linkify.WEB_URLS
+        usageTextInfo.linksClickable = true
         usageTextInfo.text =
             HtmlCompat.fromHtml(
                 main.getString(
