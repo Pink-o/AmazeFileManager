@@ -96,6 +96,8 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.format.Formatter;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -124,15 +126,25 @@ public class GeneralDialogCreation {
   private static final Logger LOG = LoggerFactory.getLogger(GeneralDialogCreation.class);
 
   public static MaterialDialog showBasicDialog(
-      ThemedActivity themedActivity,
+      @NonNull ThemedActivity themedActivity,
       @StringRes int content,
       @StringRes int title,
       @StringRes int postiveText,
       @StringRes int negativeText) {
+    return showBasicDialog(themedActivity, content, title, postiveText, negativeText, false);
+  }
+
+  public static MaterialDialog showBasicDialog(
+      @NonNull ThemedActivity themedActivity,
+      @StringRes int content,
+      @StringRes int title,
+      @StringRes int postiveText,
+      @StringRes int negativeText,
+      boolean hasHtml) {
     int accentColor = themedActivity.getAccent();
-    MaterialDialog.Builder a =
+    MaterialDialog.Builder dialogBuilder =
         new MaterialDialog.Builder(themedActivity)
-            .content(content)
+            .content("") // HACK make it empty and then fill it manually for links to work
             .widgetColor(accentColor)
             .theme(themedActivity.getAppTheme().getMaterialDialogTheme())
             .title(title)
@@ -140,7 +152,19 @@ public class GeneralDialogCreation {
             .positiveColor(accentColor)
             .negativeText(negativeText)
             .negativeColor(accentColor);
-    return a.build();
+    MaterialDialog dialog = dialogBuilder.build();
+
+    if (hasHtml) {
+      dialog.getContentView().setMovementMethod(LinkMovementMethod.getInstance());
+      dialog.getContentView().setAutoLinkMask(Linkify.WEB_URLS);
+      dialog.getContentView().setLinksClickable(true);
+      dialog
+          .getContentView()
+          .setText(
+              HtmlCompat.fromHtml(
+                  themedActivity.getString(content), HtmlCompat.FROM_HTML_MODE_COMPACT));
+    }
+    return dialog;
   }
 
   public static MaterialDialog showNameDialog(
