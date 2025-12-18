@@ -160,9 +160,7 @@ public class GeneralDialogCreation {
       dialog.getContentView().setLinksClickable(true);
       dialog
           .getContentView()
-          .setText(
-              HtmlCompat.fromHtml(
-                  themedActivity.getString(content), HtmlCompat.FROM_HTML_MODE_COMPACT));
+          .setText(HtmlCompat.fromHtml(themedActivity.getString(content), FROM_HTML_MODE_COMPACT));
     }
     return dialog;
   }
