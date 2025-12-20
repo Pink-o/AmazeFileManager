@@ -241,13 +241,15 @@ public class PermissionsActivity extends ThemedActivity
    */
   public void requestAllFilesAccess(@NonNull final OnPermissionGranted onPermissionGranted) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
+      final boolean hasHtml = true;
       final MaterialDialog materialDialog =
           GeneralDialogCreation.showBasicDialog(
               this,
               R.string.grant_all_files_permission,
               R.string.grantper,
               R.string.grant,
-              R.string.cancel);
+              R.string.cancel,
+              hasHtml);
       materialDialog.getActionButton(DialogAction.NEGATIVE).setOnClickListener(v -> finish());
       materialDialog
           .getActionButton(DialogAction.POSITIVE)
