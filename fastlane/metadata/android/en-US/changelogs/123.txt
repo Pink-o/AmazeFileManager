@@ -1,32 +1,3 @@
-Added:
-
-* Add explicit TLS option for FTPSClient
-
 Changed:
 
 * Target API 35
-* Use ContextCompat.startForegroundService() to better handle intents to start FTP service
-* Increase DEFAULT_TRANSFER_QUANTUM to 1 MB for file operations
-* Discard dependency info in apk and stricten cleartext traffic to local streamer only
-* Migrate fingerprint decryption dialog to use AndroidX Biometrics API
-* Integrate the settings for file deletion into a single subsection
-* Add guard against invalid port numbers passed into NetCopyConnectionInfo 
-* Adaptations to enable 16KB page size support
-* Add checks for getting network interfaces that supports multicast, should network code needs to send Datagram packets
-
-Fixed:
-
-* Add guard for empty string at port textfield in SftpConnectionDialog
-* Fix FAB visibility glitch on history element
-* Fix NPE on encryption
-* Fix bookmark crash
-* Fix last modified timestamps not getting preserved
-* Fix files with ambiguous names crash on extraction
-* Fix NPE on scroll
-* Fix NPE on search 
-* Fix NPE on recycling bin listing
-* Fix save unsupported URI
-* Fix text issues
-* Fix selected item is unselected after select all when there is only one item in the directory
-* Ensure only valid file paths are processed in database viewer
-* Fix misc NPEs and add guards 
