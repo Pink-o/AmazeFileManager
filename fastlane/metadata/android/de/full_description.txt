@@ -1,6 +1,6 @@
-Leichter und geschmeidiger Dateimanager nach Material Design Guidelines.
+Einfacher und lässiger Dateimanager gemäß den Material-Design-Richtlinien.
 
-Features:
+Merkmale:<br style="">
 
 - Grundlegende Funktionen wie Ausschneiden, Kopieren, Löschen, Komprimieren, Extrahieren
 - Mehrere Tabs zur Erhöhung der Produktivität
