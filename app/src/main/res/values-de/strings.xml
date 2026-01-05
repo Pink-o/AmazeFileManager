@@ -324,7 +324,6 @@ andernfalls wird nach Treffern gesucht.</string>
     <string name="translate_summary">Amaze in Ihre Sprache übersetzen</string>
     <string name="paypal_copy_message">PayPal-ID in die Zwischenablage kopiert</string>
     <string name="searching_devices">Suche nach Geräten</string>
-    <string name="use_custom_ip">Benutzerdefinierte IP verwenden</string>
     <string name="bookmark_lost">Lesezeichen nicht gefunden, erstelle erneut&#8230;</string>
 
     <string name="share_limit">Es können nicht mehr als 100 Dateien geteilt werden</string>

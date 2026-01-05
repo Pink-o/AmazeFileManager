@@ -319,7 +319,6 @@
     <string name="translate_summary">Μετάφραση του Amaze στη γλώσσα σας</string>
     <string name="paypal_copy_message">Το PayPal ID αντιγράφηκε στο πρόχειρο</string>
     <string name="searching_devices">Αναζήτηση συσκευών</string>
-    <string name="use_custom_ip">Χρήση προσαρμοσμένης IP</string>
     <string name="bookmark_lost">Δεν βρέθηκε σελιδοδείκτης, επαναδημιουργία&#8230;</string>
 
     <string name="share_limit">Αδύνατη η κοινή χρήση περισσότερων από 100 αρχείων</string>

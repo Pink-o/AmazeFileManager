@@ -323,7 +323,6 @@
     <string name="translate_summary">תרגום Amaze לשפה שלך</string>
     <string name="paypal_copy_message">מזהה ה־PayPal הועתק ללוח הגזירים</string>
     <string name="searching_devices">חיפוש התקנים</string>
-    <string name="use_custom_ip">להשתמש בכתובת IP מותאמת אישית</string>
     <string name="bookmark_lost">הסימניה לא נמצאה, נוצרת מחדש&#8230;</string>
 
     <string name="smb_instructions">
