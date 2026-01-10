@@ -245,7 +245,6 @@
     <string name="show_dividers">הצגת מפרידים</string>
     <string name="needs_access">נדרשת גישה לכתיבה</string>
     <string name="smb_connection">חיבור SMB</string>
-    <string name="smb_server">כתובת IP של השרת</string>
     <string name="server_address">כתובת IP של השרת</string>
     <string name="username">שם משתמש</string>
     <string name="password">סיסמה</string>
@@ -321,7 +320,6 @@
     <string name="translate_summary">תרגום Amaze לשפה שלך</string>
     <string name="paypal_copy_message">מזהה ה־PayPal הועתק ללוח הגזירים</string>
     <string name="searching_devices">חיפוש התקנים</string>
-    <string name="use_custom_ip">להשתמש בכתובת IP מותאמת אישית</string>
     <string name="bookmark_lost">הסימניה לא נמצאה, נוצרת מחדש&amp;#8230;</string>
 
     <string name="share_limit">לא ניתן לשתף יותר מ־100 קבצים</string>
