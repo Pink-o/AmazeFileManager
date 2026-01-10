@@ -243,7 +243,6 @@
     <string name="show_dividers">显示分割线</string>
     <string name="needs_access">需要写入权限</string>
     <string name="smb_connection">SMB 连接</string>
-    <string name="smb_server">服务器 IP 地址</string>
     <string name="server_address">服务器 IP 地址</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
@@ -319,7 +318,6 @@
     <string name="translate_summary">将 Amaze 程序翻译为您的语言</string>
     <string name="paypal_copy_message">Paypal ID 已复制至剪切板</string>
     <string name="searching_devices">正在搜索设备</string>
-    <string name="use_custom_ip">使用自定义 IP</string>
     <string name="bookmark_lost">无法找到书签，正在重新创建&amp;#8230;</string>
 
     <string name="share_limit">最多只能分享 100 个文件</string>
