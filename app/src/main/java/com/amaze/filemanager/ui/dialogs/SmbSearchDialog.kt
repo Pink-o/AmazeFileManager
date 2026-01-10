@@ -93,7 +93,7 @@ class SmbSearchDialog : DialogFragment() {
                 mainActivity.showSMBDialog("", "", false)
             }
         }
-        builder.positiveText(R.string.use_custom_ip)
+        builder.positiveText(R.string.smb_manual_enter_host)
         builder.positiveColor(accentColor)
         viewModel.valHolder.postValue(ComputerParcelable("-1", "-1"))
         listViewAdapter = ListViewAdapter(requireActivity())

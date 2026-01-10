@@ -320,7 +320,6 @@
     <string name="translate_summary">Перевести Amaze на ваш язык</string>
     <string name="paypal_copy_message">Paypal id скопирован в буфер обмена</string>
     <string name="searching_devices">Поиск устройств</string>
-    <string name="use_custom_ip">Использовать другой IP</string>
     <string name="bookmark_lost">Закладка не найдена, пересоздание&#8230;</string>
 
     <string name="share_limit">Нельзя отправить больше 100 файлов</string>

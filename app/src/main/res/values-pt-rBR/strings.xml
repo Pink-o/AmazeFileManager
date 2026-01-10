@@ -318,7 +318,6 @@
     <string name="translate_summary">Traduza o Amaze para seu idioma</string>
     <string name="paypal_copy_message">ID do Paypal copiado para a área de transferência</string>
     <string name="searching_devices">Procurando dispositivos</string>
-    <string name="use_custom_ip">Usar IP personalizado</string>
     <string name="bookmark_lost">Favorito não encontrado, recriando&#8230;</string>
 
     <string name="share_limit">Não é possível compartilhar mais que 100 arquivos</string>

@@ -324,7 +324,6 @@
     <string name="translate_summary">Terjemahkan Amaze ke dalam bahasa Anda</string>
     <string name="paypal_copy_message">Id Paypal disalin ke papan klip</string>
     <string name="searching_devices">Mencari perangkat</string>
-    <string name="use_custom_ip">Gunakan IP khusus</string>
     <string name="bookmark_lost">Markah tidak ditemukan, membuat ulang&#8230;</string>
 
     <string name="share_limit">Tidak bisa membagikan lebih dari 100 berkas</string>
