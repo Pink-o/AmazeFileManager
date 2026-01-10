@@ -245,7 +245,6 @@
     <string name="show_dividers">Erakutsi banatzaileak</string>
     <string name="needs_access">Idazteko baimena behar da</string>
     <string name="smb_connection">SMB konexioa</string>
-    <string name="smb_server">Zerbitzariaren IP helbidea</string>
     <string name="server_address">Zerbitzariaren IP helbidea</string>
     <string name="username">Erabiltzaile-izena</string>
     <string name="password">Pasahitza</string>
@@ -321,7 +320,6 @@
     <string name="translate_summary">Itzuli Amaze zure hizkuntzara</string>
     <string name="paypal_copy_message">Paypal id-a arbelera kopiatu da</string>
     <string name="searching_devices">Gailuak bilatzen</string>
-    <string name="use_custom_ip">Erabili IP pertsonalizatua</string>
     <string name="bookmark_lost">Ez da laster-marka aurkitu, birsortzen&amp;#8230;</string>
 
     <string name="share_limit">Ezin dira 100 fitxategi baino gehiago partekatu</string>
