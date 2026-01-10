@@ -243,7 +243,6 @@
     <string name="show_dividers">顯示分隔線</string>
     <string name="needs_access">需要寫入的權限</string>
     <string name="smb_connection">SMB 連線</string>
-    <string name="smb_server">伺服器 IP 位址</string>
     <string name="server_address">伺服器 IP 位址</string>
     <string name="username">使用者名稱</string>
     <string name="password">密碼</string>
@@ -319,7 +318,6 @@
     <string name="translate_summary">用您的語言翻譯 Amaze</string>
     <string name="paypal_copy_message">Paypal ID 已複製到剪貼簿</string>
     <string name="searching_devices">正在搜尋裝置</string>
-    <string name="use_custom_ip">使用自訂的 IP</string>
     <string name="bookmark_lost">找不到，重新建立書籤......</string>
 
     <string name="share_limit">無法分享超過 100 個檔案</string>
