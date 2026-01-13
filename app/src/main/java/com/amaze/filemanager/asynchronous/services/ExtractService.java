@@ -423,6 +423,7 @@ public class ExtractService extends AbstractProgressiveService {
       if (watcherUtil != null) watcherUtil.stopWatch();
       Intent intent = new Intent(MainActivity.KEY_INTENT_LOAD_LIST);
       intent.putExtra(MainActivity.KEY_INTENT_LOAD_LIST_FILE, extractionPath);
+      intent.setPackage(extractService.getPackageName());
       extractService.sendBroadcast(intent);
       extractService.stopSelf();
 

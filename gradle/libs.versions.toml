@@ -1,8 +1,9 @@
 [versions]
 compileSdk = "34"
 minSdk = "21"
-targetSdk = "34"
+targetSdk = "35"
 kotlin = "1.9.25"
+ndk = "28.2.13676358" #r28c
 
 jacocoAndroid = "0.2.1"
 gradle = "8.5.2"
@@ -33,9 +34,9 @@ androidXTestRunner = "1.6.2"
 androidXTestExt = "1.2.1"
 androidXArchCoreTest = "2.2.0"
 androidXMultidex = "2.0.1"
-autoService = "1.0-rc4"
-kotlinxCoroutines = "1.7.3"
-kotlinStdlibJdk8 = "1.9.25"
+autoService = "1.1.1"
+kotlinxCoroutineTest = "1.7.3"
+kotlinStdlibJdk8 = "1.9.20"
 uiAutomator = "2.3.0"
 junit = "4.13.2"
 slf4j = "2.0.13"
@@ -71,11 +72,13 @@ mpAndroidChart = "v3.0.2"
 concurrentTrees = "2.6.1"
 aboutLibraries = "6.1.1"
 amazeTrashBin = "1.0.10"
+rustAndroidGradle = "0.9.6"
 
 [libraries]
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 jacoco-android-plugin = { module = "com.mxalbert.gradle:jacoco-android", version.ref = "jacocoAndroid" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+rust-android-gradle = { module = "org.mozilla.rust-android-gradle.rust-android:org.mozilla.rust-android-gradle.rust-android.gradle.plugin", version.ref = "rustAndroidGradle" }
 
 androidX-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidXAppCompat" }
 androidX-constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidXConstraintLayout" }

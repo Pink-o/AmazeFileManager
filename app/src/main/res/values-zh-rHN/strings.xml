@@ -242,7 +242,7 @@
     <string name="needs_access_summary">请选择根目录下的 \t</string>
     <string name="needs_access_summary1">\t 以授予寫入的權限</string>
     <string name="smb_connection">SMB 連線</string>
-    <string name="smb_server">伺服器 IP 位址</string>
+    <string name="smb_server">SMB伺服器主機名稱</string>
     <string name="server_address">伺服器 IP 位址</string>
     <string name="username">用户名</string>
     <string name="password">密碼</string>
@@ -318,51 +318,8 @@
     <string name="translate_summary">前往 Amaze 本地化系统进行语言翻译</string>
     <string name="paypal_copy_message">Paypal ID 已複製到剪貼簿</string>
     <string name="searching_devices">正在搜尋裝置</string>
-    <string name="use_custom_ip">使用自定义 IP</string>
     <string name="bookmark_lost">无法找到书签，正在重新创建&#8230;</string>
 
-    <string name="smb_instructions">
-        <html>
-            <body>
-                <h1>如何在安卓上访问视窗操作系统的共享文件夹？(服务器通讯包协议) </h1>
-                <ul>
-                    <li>
-                        <b>启用文件共享功能</b>
-                    </li>
-                    <p style='margin-left: 40px'>
-                        在视窗操作系统中打开控制面板，点击“网络和 Internet——选择家庭组和共享选项——更改高级共享设置——启用文件和打印机共享功能”。
-                    </p>
-                    
-                    <li>
-                        <b>其他文件共享设置</b>
-                    </li>
-                    <p style='margin-left: 40px'>
-                        您还可以设置一些其他高级选项。
-                        如：如果您信任本地网络上的所有设备，则可以无需密码访问文件。具体做法是在视窗操作系统中启用文件和打印机共享功能后，
-                        打开资源管理器，右键点击您想要共享的文件夹并选择“属性——共享”。
-                        </p>
-                        
-                    <li>
-                        <b>确保设备处于同一的局域网</b>
-                    </li>
-                    <p style='margin-left: 40px'>
-                        此功能使文件在本地网络上可用，因此您的 PC 和移动设备必须处于同一个本地网络上。
-                        当您的设备使用移动数据时，您无法通过 Internet 访问共享的视窗操作系统文件夹——您必须链接同一局域网。
-                    </p>
-                    
-                    <li>
-                        <b>查找 IP 地址</b>\n
-                    </li>
-                    <p style='margin-left: 40px'>
-                        在视窗操作系统中打开命令提示符，输入 ipconfig 后按回车键。
-                        网络适配器下的“默认网关”即是您路由器的 IP 地址。“IPv4 地址”即是您计算机的IP地址。
-                    </p>
-                    
-                    <b>在 SMB 对话框中输入详细信息。</b>
-                </ul>
-            </body>
-        </html>
-    </string>
     <string name="share_limit">最多只能分享 100 个文件</string>
     <string name="otg_access">选择根目录下的 OTG 设备</string>
     <string name="information">資訊</string>

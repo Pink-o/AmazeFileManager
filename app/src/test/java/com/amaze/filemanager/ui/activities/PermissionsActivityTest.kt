@@ -29,6 +29,8 @@ import android.os.Build.VERSION_CODES.P
 import android.os.Build.VERSION_CODES.R
 import android.os.storage.StorageManager
 import android.provider.Settings
+import androidx.core.text.HtmlCompat
+import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -128,9 +130,10 @@ class PermissionsActivityTest {
                         this.titleView.text,
                     )
                     assertEquals(
-                        activity.getString(
-                            com.amaze.filemanager.R.string.grant_all_files_permission,
-                        ),
+                        HtmlCompat.fromHtml(
+                            activity.getString(com.amaze.filemanager.R.string.grant_all_files_permission),
+                            FROM_HTML_MODE_COMPACT,
+                        ).toString(),
                         this.contentView?.text.toString(),
                     )
                     this.getActionButton(DialogAction.POSITIVE).run {

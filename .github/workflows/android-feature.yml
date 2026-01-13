@@ -22,10 +22,19 @@ jobs:
         with:
           distribution: "temurin"
           java-version: 17
+      - name: Set up NDK
+        id: setup-ndk
+        uses: nttld/setup-ndk@afb4c9964b521afb97c864b7d40b11e6911bd410
+        with:
+          ndk-version: r28c
+          link-to-sdk: true
+          local-cache: true
       - name: Check formatting using spotless
         uses: gradle/actions/setup-gradle@v3
         with:
           arguments: spotlessCheck --stacktrace
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
 
   build:
     name: Build debug and run Jacoco tests
@@ -37,6 +46,39 @@ jobs:
         with:
           distribution: "temurin"
           java-version: 17
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            file_operations/target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+      - name: Setup Rust for Android
+        run: |
+          cd file_operations
+          chmod +x setup_rust_android.sh
+          ./setup_rust_android.sh
+      - name: Verify Rust setup
+        run: |
+          cd file_operations
+          echo "🔍 Verifying Rust Android targets..."
+          rustup target list --installed | grep android || echo "No Android targets found"
+          echo "🔍 Verifying cargo configuration..."
+          if [ -f .cargo/config.toml ]; then
+            echo "✅ .cargo/config.toml exists"
+          else
+            echo "❌ .cargo/config.toml missing"
+            exit 1
+          fi
       - name: Build with Gradle
         uses: gradle/actions/setup-gradle@v3
         with:

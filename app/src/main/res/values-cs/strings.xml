@@ -318,46 +318,9 @@
     <string name="translate_summary">Přeložte Amaze do vašeho jazyka</string>
     <string name="paypal_copy_message">Paypal ID bylo zkopírováno do schránky</string>
     <string name="searching_devices">Vyhledávání zařízení</string>
-    <string name="use_custom_ip">Použít vlastní IP</string>
     <string name="bookmark_lost">Záložka nebyla nalezena, obnovování&#8230;</string>
 
-    <string name="smb_instructions">
-<html>
-            <body>
-                <h1>Jak můžu získat přístup ke sdílené složce Windows na platforme Android</h1>\n\n
-                <ul>
-                    <li>
-                        <b>Povolit sdílení souborů</b>\n
-                    </li>
-                    <p style="margin-left: 40px">
-                        Otevřete Ovládací panel, klikněte na tlačítko \"Vybrat domácí skupinu a možnosti sdílení\", klikněte na tlačítko \"Změnit rozšířené nastavení sdílení\" a prejděte na sdílení složek a tiskáren.\n\n
-                    </p>
 
-                    <li>
-                        <b>Rozšířené nastavení sdílení</b>\n
-                    </li>
-                    <p style="margin-left: 40px">
-                        Můžete nastavit i další pokročilé možnosti sdílení.\nNapříklad, můžete povolit přístup k souborům bez hesla pokud důvěřujete všem zařízením v síti. Jakmile je sdílení souborů a tiskáren zapnuto, otevřete Průzkumník Windows nebo jiného správce souborů, klikněte pravým tlačítkem myši na složku, ktorou chcete sdílet  a vyberte možnost \"Vlastnosti\".\nKliknutím na tlačítko Sdílet  bude složka dostupná v síti.\n\n
-                        </p>
-
-                    <li>
-                        <b>Uistěte se, že zařízení jsou ve stejné Wi-Fi síti</b>\n
-                    </li>
-                    <p style="margin-left: 40px">
-                       Vaše zařízení Windows a Android musí být na stejné síti. Například, že nemůžete mít přístup ke složce systému Windows na systém Android, když je vaše zařízení Android připojené na mobilní internet!\n\n
-                    </p>
-
-                    <li>
-                        <b>Vyhledávání IP adresy</b>\n
-                    </li>
-                    <p style="margin-left: 40px">
-                        Otevřete příkazový řádek. Zadejte \'ipconfig\' a stiskněte Enter. Najděte \"IPv4 adresu\" adaptéru, kterým jsou Windows a Android zařízení připojené ke stejné síti.\n\n
-                    </p>
-
-                    <b>Enter details in SMB dialog box</b>\n
-                </ul>
-            </body>
-        </html>    </string>
     <string name="share_limit">Nelze sdílet více než 100 souborů</string>
     <string name="otg_access">Vyberte kořenovou složku OTG zařízení</string>
     <string name="information">Informace</string>

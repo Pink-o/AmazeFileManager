@@ -243,7 +243,7 @@
     <string name="needs_access_summary">请选择根目录下的 \t</string>
     <string name="needs_access_summary1">授予当前操作写入权限</string>
     <string name="smb_connection">服务器通讯包协议连接</string>
-    <string name="smb_server">服务器互联网协议地址</string>
+    <string name="smb_server">SMB服务器地址</string>
     <string name="server_address">服务器互联网协议地址</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
@@ -319,52 +319,8 @@
     <string name="translate_summary">将Amaze程序翻译为您的语言</string>
     <string name="paypal_copy_message">Paypal ID 已复制至剪切板</string>
     <string name="searching_devices">正在搜索设备</string>
-    <string name="use_custom_ip">使用自定义 IP</string>
     <string name="bookmark_lost">无法找到书签，正在重新创建&#8230;</string>
 
-    <string name="smb_instructions">
-        <html>
-            <body>
-                <h1>如何在安卓上访问视窗操作系统的共享文件夹？(使用服务器通讯包协议——SMB)</h1>\n\n
-                <ul>
-                    <li>
-                        <b>在视窗操作系统上启用文件共享功能</b>\n
-                    </li>
-                    <p style='margin-left: 40px'>
-                        在视窗操作系统中打开控制面板，点击“网络和 Internet——选择家庭组和共享选项——更改高级共享设置——启用文件和打印机共享功能”。\n\n
-                    </p>
-
-                    <li>
-                        <b>其他文件共享设置</b>\n
-                    </li>
-                    <p style='margin-left: 40px'>
-                        您还可以设置一些其他高级选项。 \n
-                        例如：如果您信任本地网络上的所有设备，则可以无需密码访问您的文件。具体做法是在视窗操作系统中启用文件和打印机共享功能后，
-打开资源管理器，右键点击您想要共享的文件夹并选择“属性——共享”。\n
-                       单击共享按钮，使得该文件夹在网络上可用。
-
-
-                        </p>
-
-                    <li>
-                        <b>确保两个设备都在同一个局域网内</b>\n
-                    </li>
-                    <p style='margin-left: 40px'>
-                        这个功能可以让您在本地网络上共享文件，因此您的电脑和移动设备需要连接到同一个本地网络。当您的设备使用移动数据时，您无法通过网络访问共享的视窗操作系统文件夹。您必须连接到同一局域网才能访问共享文件夹。\n\n
-                    </p>
-
-                    <li>
-                       <b>查找互联网协议地址</b>\n
-                    </li>
-                    <p style='margin-left: 40px'>
-                        在视窗操作系统中打开命令提示符，输入“ipconfig”后按回车键。在网络适配器下查找默认网关以获取路由器的互联网协议地址。在同一适配器部分下查找“Pv4 地址”，以确认您计算机的互联网协议地址。\n\n
-                    </p>
-
-                    <b>在服务器通讯包协议对话框中输入详细信息。</b>\n
-                </ul>
-            </body>
-        </html>
-    </string>
     <string name="share_limit">最多只能分享 100 个文件</string>
     <string name="otg_access">选择根目录下的 OTG 设备</string>
     <string name="information">信息</string>

@@ -319,7 +319,6 @@
     <string name="translate_summary">Fordítsa le az Amaze fájlkezelőjét a saját nyelvére</string>
     <string name="paypal_copy_message">A Paypal id a vágólapra lett másolva</string>
     <string name="searching_devices">Eszközök keresése</string>
-    <string name="use_custom_ip">Egyéni IP használata</string>
     <string name="bookmark_lost">Nem található könyvjelző, létrehozás újra&#8230;</string>
 
     <string name="share_limit">Nem oszthat meg 100-nál több fájlt</string>
