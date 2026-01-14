@@ -242,8 +242,9 @@
     <string name="databasereader">数据库读取器</string>
     <string name="show_dividers">显示分割线</string>
     <string name="needs_access">需要写入权限</string>
-    <string name="smb_connection">SMB 连接</string>
-    <string name="server_address">服务器 IP 地址</string>
+    <string name="needs_access_summary">请选择根目录下的 \t</string>
+    <string name="needs_access_summary1">授予当前操作写入权限</string>
+    <string name="smb_server">SMB服务器地址</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
     <string name="anonymous">匿名用户</string>
