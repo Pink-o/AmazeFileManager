@@ -36,7 +36,7 @@
     <string name="uninstall">Desinstalar</string>
     <string name="play">Play Store</string>
     <string name="properties">Propiedades</string>
-    <string name="copyingapks">Copiando el apk %d a %s</string>
+    <string name="copyingapks">Copiando el apk 1 %d a 2 %s</string>
     <string name="delbook">Borrar marcador</string>
     <string name="add_to_bookmarks">Añadir a marcadores</string>
     <string name="enterpath">Introduzca la ruta</string>
@@ -567,7 +567,7 @@
     <string name="no_obtainable_info">No hay información sobre este archivo</string>
     <string name="reopen_from_source">No puedo, por favor reabra desde la ultima aplicación</string>
     <string name="no_file_error">Algo se rompió, no hay nada para abrir</string>
-    <string name="file_too_long">El archivo es demasiado largo y no se puede editar, sin embargo se pueden leer los %d primeros caracteres</string>
+    <string name="file_too_long">El archivo es demasiado largo y no se puede editar, sin embargo se pueden leer los 1%d primeros caracteres</string>
     <string name="file_read_only">El archivo que se abrió es de solo lectura</string>
     <string name="got_it">Entiendo</string>
     <string name="encrypt_file_save_as">Guardar archivo encriptado como…</string>
