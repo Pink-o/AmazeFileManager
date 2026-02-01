@@ -9,6 +9,8 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    outputs:
+      has_changes: ${{ steps.check.outputs.upstream_commits > 0 }}
     
     steps:
       - name: Checkout fork
@@ -35,14 +37,16 @@ jobs:
           echo "upstream_commits=$UPSTREAM_COMMITS" >> $GITHUB_OUTPUT
           if [ "$UPSTREAM_COMMITS" -gt 0 ]; then
             echo "Found $UPSTREAM_COMMITS new commits from upstream"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
           else
             echo "Fork is up to date with upstream"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Merge upstream changes
         if: steps.check.outputs.upstream_commits > 0
         run: |
-          git merge upstream/release/4.0 --no-edit --allow-unrelated-histories || {
+          git merge upstream/release/4.0 -m "Merge upstream changes [skip ci]" --allow-unrelated-histories || {
             echo "Merge conflict detected! Manual intervention required."
             exit 1
           }
@@ -52,3 +56,19 @@ jobs:
         run: |
           git push origin release/4.0
 
+      - name: Trigger build workflow
+        if: steps.check.outputs.has_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const today = new Date().toISOString().split('T')[0];
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'build-release.yml',
+              ref: 'release/4.0',
+              inputs: {
+                release_name: `sync-${today}`
+              }
+            });
+            console.log('Triggered build-release.yml workflow');
