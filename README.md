@@ -45,6 +45,14 @@ Downloads
 [<img alt="Get it on GitHub" height="80" src="https://i.ibb.co/q0mdc4Z/get-it-on-github.png">](https://github.com/TeamAmaze/AmazeFileManager/releases/latest)
 [<img alt="Get it on AFH" height="50px" src="https://www.androidfilehost.com/images/afh.png">](https://www.androidfilehost.com/?w=files&flid=73967)
 
+Building from Source
+---
+Want to build the APK yourself? See the **[Build Guide](BUILD_GUIDE.md)** for detailed instructions on:
+- Setting up the Android SDK and NDK
+- Installing Rust for native code compilation
+- Building debug and release APKs
+- Signing APKs for installation
+
 Contribute
 ---
 You can contribute via one of the following ways:

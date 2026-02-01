@@ -24,17 +24,9 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.Callable;
 
-import org.acra.ACRA;
-import org.acra.attachment.DefaultAttachmentProvider;
-import org.acra.config.CoreConfiguration;
-import org.acra.config.CoreConfigurationBuilder;
-import org.acra.data.StringFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.amaze.filemanager.BuildConfig;
-import com.amaze.filemanager.R;
-import com.amaze.filemanager.crashreport.ErrorActivity;
 import com.amaze.filemanager.database.ExplorerDatabase;
 import com.amaze.filemanager.database.UtilitiesDatabase;
 import com.amaze.filemanager.database.UtilsHandler;
@@ -112,12 +104,6 @@ public class AppConfig extends GlideApplication {
     // disabling file exposure method check for api n+
     StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
     StrictMode.setVmPolicy(builder.build());
-  }
-
-  @Override
-  protected void attachBaseContext(Context base) {
-    super.attachBaseContext(base);
-    initACRA();
   }
 
   @Override
@@ -229,38 +215,6 @@ public class AppConfig extends GlideApplication {
 
   public UtilitiesDatabase getUtilitiesDatabase() {
     return utilitiesDatabase;
-  }
-
-  /**
-   * Called in {@link #attachBaseContext(Context)} after calling the {@code super} method. Should be
-   * overridden if MultiDex is enabled, since it has to be initialized before ACRA.
-   */
-  protected void initACRA() {
-    if (ACRA.isACRASenderServiceProcess()) {
-      return;
-    }
-
-    try {
-      final CoreConfiguration acraConfig =
-          new CoreConfigurationBuilder()
-              .withBuildConfigClass(BuildConfig.class)
-              .withReportFormat(StringFormat.JSON)
-              .withAttachmentUriProvider(DefaultAttachmentProvider.class)
-              .withSendReportsInDevMode(true)
-              .build();
-      ACRA.init(this, acraConfig);
-      // Refer to ACRA's constructor for exact exception(s) thrown
-    } catch (IllegalStateException ace) {
-      log.warn("failed to initialize ACRA", ace);
-      ErrorActivity.reportError(
-          this,
-          ace,
-          null,
-          ErrorActivity.ErrorInfo.make(
-              ErrorActivity.ERROR_UNKNOWN,
-              "Could not initialize ACRA crash report",
-              R.string.app_ui_crash));
-    }
   }
 
   public TrashBin getTrashBinInstance() {
