@@ -33,7 +33,7 @@ jobs:
           yes | sdkmanager --install "ndk;28.0.12916984" || true
 
       - name: Set up Rust
-        uses: dtolnay/rust-action@stable
+        uses: dtolnay/rust-toolchain@stable
         
       - name: Add Rust Android targets
         run: |
