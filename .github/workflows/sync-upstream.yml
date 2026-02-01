@@ -1,0 +1,54 @@
+name: Sync Fork with Upstream
+
+on:
+  schedule:
+    # Runs daily at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@v4
+        with:
+          ref: release/4.0
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/TeamAmaze/AmazeFileManager.git
+          git fetch upstream
+
+      - name: Check for upstream changes
+        id: check
+        run: |
+          UPSTREAM_COMMITS=$(git rev-list HEAD..upstream/release/4.0 --count)
+          echo "upstream_commits=$UPSTREAM_COMMITS" >> $GITHUB_OUTPUT
+          if [ "$UPSTREAM_COMMITS" -gt 0 ]; then
+            echo "Found $UPSTREAM_COMMITS new commits from upstream"
+          else
+            echo "Fork is up to date with upstream"
+          fi
+
+      - name: Merge upstream changes
+        if: steps.check.outputs.upstream_commits > 0
+        run: |
+          git merge upstream/release/4.0 --no-edit --allow-unrelated-histories || {
+            echo "Merge conflict detected! Manual intervention required."
+            exit 1
+          }
+
+      - name: Push changes
+        if: steps.check.outputs.upstream_commits > 0
+        run: |
+          git push origin release/4.0
+
