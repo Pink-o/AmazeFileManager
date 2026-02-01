@@ -31,8 +31,6 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.Vector;
 
-import org.acra.ReportField;
-import org.acra.data.CrashReportData;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,24 +143,6 @@ public class ErrorActivity extends ThemedActivity {
       el.add(e);
     }
     reportError(context, el, rootView, errorInfo);
-  }
-
-  public static void reportError(
-      final Context context, final CrashReportData report, final ErrorInfo errorInfo) {
-    System.out.println("ErrorActivity reportError");
-    final String[] el = new String[] {report.getString(ReportField.STACK_TRACE)};
-    // Add this to try figure out what happened when stacktrace is sent to acra.
-    // Hope this will be useful for build failures...
-    if (BuildConfig.DEBUG) {
-      for (String line : el) {
-        System.out.println(line);
-      }
-    }
-    final Intent intent = new Intent(context, ErrorActivity.class);
-    intent.putExtra(ERROR_INFO, errorInfo);
-    intent.putExtra(ERROR_LIST, el);
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(intent);
   }
 
   private static String getStackTrace(final Throwable throwable) {
