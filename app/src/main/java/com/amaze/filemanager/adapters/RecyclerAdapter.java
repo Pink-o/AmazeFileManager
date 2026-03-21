@@ -99,7 +99,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -528,12 +527,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   @Override
   public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
     super.onViewAttachedToWindow(holder);
-    boolean enableMarqueeFilename =
-        sharedPrefs.getBoolean(PreferencesConstants.PREFERENCE_ENABLE_MARQUEE_FILENAME, true);
-    if (enableMarqueeFilename && holder instanceof ItemViewHolder) {
+    // Use the variable already stored in 'this.enableMarquee' instead of sharedPrefs again!
+    if (this.enableMarquee && holder instanceof ItemViewHolder) {
       AnimUtils.marqueeAfterDelay(2000, ((ItemViewHolder) holder).txtTitle);
     }
-    super.onViewAttachedToWindow(holder);
   }
 
   @Override
@@ -765,8 +762,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mainFragment.adjustListViewForTv(holder, mainFragment.getMainActivity());
           }
         });
-    holder.txtTitle.setEllipsize(
-        enableMarquee ? TextUtils.TruncateAt.MARQUEE : TextUtils.TruncateAt.MIDDLE);
+    Utils.configureTitleMarquee(holder.txtTitle, enableMarquee);
 
     final boolean isBackButton = getItemsDigested().get(position).specialType == TYPE_BACK;
     if (isBackButton) {
