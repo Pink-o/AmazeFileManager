@@ -254,6 +254,8 @@ public class MainActivity extends PermissionsActivity
   public String oppathe, oppathe1;
   public ArrayList<String> oppatheList;
 
+  private boolean hadStoragePermission;
+
   // This holds the Uris to be written at initFabToSave()
   private List<Uri> urisToBeSaved;
 
@@ -411,7 +413,15 @@ public class MainActivity extends PermissionsActivity
       getPrefs().edit().putBoolean(PREFERENCE_BOOKMARKS_ADDED, true).commit();
     }
 
-    checkForExternalPermission();
+    String actionIntent = intent != null ? intent.getAction() : null;
+
+    if (Intent.ACTION_GET_CONTENT.equals(actionIntent)
+        || RingtoneManager.ACTION_RINGTONE_PICKER.equals(actionIntent)
+        || Intent.ACTION_VIEW.equals(actionIntent)
+        || Intent.ACTION_SEND.equals(actionIntent)
+        || Intent.ACTION_SEND_MULTIPLE.equals(actionIntent)) {
+      checkForExternalPermission();
+    }
 
     Completable.fromRunnable(
             () -> {
@@ -578,6 +588,25 @@ public class MainActivity extends PermissionsActivity
         requestNotificationPermission(true);
       }
     }
+  }
+
+  /** Ensures storage permission is granted before allowing filesystem browsing. */
+  private boolean ensureStoragePermission() {
+    if (SDK_INT < M) {
+      return true;
+    }
+
+    if (checkStoragePermission()) {
+      return true;
+    }
+
+    if (SDK_INT >= Build.VERSION_CODES.R) {
+      requestAllFilesAccess(this);
+    } else {
+      requestStoragePermission(this, true);
+    }
+
+    return false;
   }
 
   /** Checks for the action to take when Amaze receives an intent from external source */
@@ -1354,6 +1383,15 @@ public class MainActivity extends PermissionsActivity
       materialDialog.show();
       materialDialog = null;
     }
+
+    boolean hasPermissionNow = checkStoragePermission();
+
+    if (!hadStoragePermission && hasPermissionNow) {
+      goToMain(null);
+    }
+
+    hadStoragePermission = hasPermissionNow;
+    ensureStoragePermission();
 
     drawer.refreshDrawer();
     drawer.refactorDrawerLockMode();
