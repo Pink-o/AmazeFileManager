@@ -18,7 +18,7 @@ jobs:
         with:
           ref: release/4.0
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_WORKFLOWS }}
 
       - name: Configure Git
         run: |
